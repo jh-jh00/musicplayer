@@ -1,0 +1,1502 @@
+html[data-watch-app="true"] {
+  --watch-rail-w: 0px;
+  --watch-rail-open-w: 88px;
+  --watch-drawer-w: 560px;
+  --header-h: 64px;
+}
+
+html[data-watch-app="true"] body {
+  justify-content: stretch;
+  background: #101010;
+}
+
+html[data-watch-app="true"] .app {
+  max-width: none;
+  box-shadow: none;
+}
+
+html[data-watch-app="true"] .mode-segment,
+html[data-watch-app="true"] #watchLaunchRow,
+html[data-watch-app="true"] #screen-home .progress-row,
+html[data-watch-app="true"] #screen-home .player-chrome,
+html[data-watch-app="true"] .settings-card:has(#defaultMode),
+html[data-watch-app="true"] .settings-card:has(#uiTheme),
+html[data-watch-app="true"] [data-hist-play="music"],
+html[data-watch-app="true"] .mini-player {
+  display: none !important;
+}
+
+.watch-home-brand-mark,
+.watch-home-search,
+.watch-home-back,
+.watch-home-meta-row,
+.watch-search-results-head {
+  display: none;
+}
+
+html[data-watch-app="true"] .app-header {
+  display: grid;
+  grid-template-columns: minmax(190px, 1fr) minmax(280px, 640px) minmax(120px, 1fr);
+  align-items: center;
+  gap: 24px;
+  background: rgba(16, 16, 16, 0.96);
+  backdrop-filter: blur(12px);
+}
+
+html[data-watch-app="true"] .app-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+}
+
+html[data-watch-app="true"] .watch-home-brand-mark {
+  width: 32px;
+  height: 24px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 14px;
+}
+
+html[data-watch-app="true"] .watch-home-search {
+  height: 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 52px;
+}
+
+html[data-watch-app="true"] .watch-home-search input {
+  min-width: 0;
+  padding: 0 16px;
+  border: 1px solid #3f3f3f;
+  border-right: 0;
+  border-radius: 20px 0 0 20px;
+  outline: 0;
+  background: #121212;
+  color: var(--text);
+}
+
+html[data-watch-app="true"] .watch-home-search input:focus {
+  border-color: #777;
+}
+
+html[data-watch-app="true"] .watch-home-search button {
+  display: grid;
+  place-items: center;
+  border: 1px solid #3f3f3f;
+  border-radius: 0 20px 20px 0;
+  background: #252525;
+  color: var(--text);
+  cursor: pointer;
+}
+
+html[data-watch-app="true"] .watch-home-search .icon,
+html[data-watch-app="true"] .watch-home-back .icon {
+  width: 20px;
+  height: 20px;
+}
+
+html[data-watch-app="true"] .watch-home-back {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 20px;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+html[data-watch-app="true"] .watch-home-back:hover {
+  background: var(--surface2);
+  color: var(--text);
+}
+
+html[data-watch-app="true"] .header-auth {
+  display: none !important;
+}
+
+html[data-watch-app="true"] .bottom-nav [data-nav="add"] {
+  display: none !important;
+}
+
+html[data-watch-app="true"] .watch-home-meta-row {
+  display: flex;
+  /* 한 줄에 다 안 들어가면 버튼 줄을 아래로 내린다.
+     안 그러면 버튼 쪽(flex-shrink: 0)이 자리를 다 먹고 채널 쪽이 16px 로 눌려
+     프로필 동그라미가 버튼 위로 삐져나오고 채널명·날짜가 사라진다.
+     넓은 화면에서는 애초에 한 줄에 들어가므로 아무것도 달라지지 않는다. */
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 18px;
+  margin-top: 14px;
+}
+
+
+html[data-watch-app="true"] .watch-home-channel {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 10px 6px 6px;
+  border: 0;
+  border-radius: 22px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+html[data-watch-app="true"] .watch-home-channel:disabled {
+  cursor: default;
+}
+
+html[data-watch-app="true"] .watch-home-channel:not(:disabled):hover {
+  background: var(--surface2);
+}
+
+html[data-watch-app="true"] .watch-home-channel-avatar {
+  overflow: hidden;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background-color: #343434;
+  color: #fff;
+  font-weight: 700;
+}
+
+html[data-watch-app="true"] .watch-home-channel-avatar.has-photo {
+  color: transparent;
+}
+
+html[data-watch-app="true"] .watch-home-channel-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+html[data-watch-app="true"] .watch-home-channel-copy strong,
+html[data-watch-app="true"] .watch-home-channel-copy span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html[data-watch-app="true"] .watch-home-channel-copy strong {
+  font-size: 15px;
+}
+
+html[data-watch-app="true"] .watch-home-channel-copy span {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+html[data-watch-app="true"] .watch-home-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+html[data-watch-app="true"] .watch-home-actions button,
+html[data-watch-app="true"] .watch-home-actions a {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 19px;
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+html[data-watch-app="true"] .watch-home-actions .icon {
+  width: 19px;
+  height: 19px;
+}
+
+html[data-watch-app="true"] .watch-home-actions button:disabled,
+html[data-watch-app="true"] .watch-home-actions a[aria-disabled="true"] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+html[data-watch-app="true"] #screen-home .track-artist {
+  display: none;
+}
+
+html[data-watch-app="true"].watch-search-view #watchDrawerBackdrop {
+  display: none !important;
+}
+
+html[data-watch-app="true"].watch-search-view #screen-add > .screen-title,
+html[data-watch-app="true"].watch-search-view #screen-add > .add-segment,
+html[data-watch-app="true"].watch-search-view #addPanelUrl,
+html[data-watch-app="true"].watch-search-view #addPanelSearch > .search-type-segment,
+html[data-watch-app="true"].watch-search-view #addPanelSearch > .field-label,
+html[data-watch-app="true"].watch-search-view #addPanelSearch > .field-row,
+html[data-watch-app="true"].watch-search-view #addPanelSearch > #searchHint,
+html[data-watch-app="true"].watch-search-view #addPanelSearch > #targetPlaylistSearch {
+  display: none !important;
+}
+
+html[data-watch-app="true"].watch-search-view #addPanelSearch {
+  width: min(100%, 1420px);
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+html[data-watch-app="true"] .watch-search-results-head {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+html[data-watch-app="true"] .watch-search-results-head p,
+html[data-watch-app="true"] .watch-search-results-head h2 {
+  margin: 0;
+}
+
+html[data-watch-app="true"] .watch-search-results-head p {
+  margin-bottom: 5px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+html[data-watch-app="true"] .watch-search-results-head h2 {
+  font-size: 22px;
+}
+
+html[data-watch-app="true"] .watch-search-results-head button {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--surface2);
+  color: var(--text);
+  cursor: pointer;
+}
+
+html[data-watch-app="true"].watch-search-view #searchResults {
+  gap: 20px;
+  padding: 0 0 36px;
+}
+
+html[data-watch-app="true"].watch-search-view .search-result {
+  display: grid;
+  grid-template-columns: minmax(200px, 340px) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 18px;
+  row-gap: 12px;
+  padding: 0 0 16px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+html[data-watch-app="true"].watch-search-view .search-result-main {
+  display: contents;
+}
+
+html[data-watch-app="true"].watch-search-view .search-thumb {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+}
+
+html[data-watch-app="true"].watch-search-view .search-meta {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  padding-top: 2px;
+}
+
+html[data-watch-app="true"].watch-search-view .search-title {
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+html[data-watch-app="true"].watch-search-view .search-artist {
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+html[data-watch-app="true"].watch-search-view .search-actions {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: end;
+  width: min(100%, 420px);
+}
+
+html[data-watch-app="true"].watch-search-view #screen-home {
+  z-index: 70;
+  pointer-events: none;
+  background: transparent;
+}
+
+html[data-watch-app="true"].watch-search-view #screen-home > :not(.player-device) {
+  visibility: hidden;
+}
+
+html[data-watch-app="true"].watch-search-view #screen-home .player-display-info {
+  display: none;
+}
+
+html[data-watch-app="true"].watch-search-view #screen-home .home-panels {
+  visibility: hidden;
+}
+
+html[data-watch-app="true"].watch-search-view.watch-search-has-player #screen-home .home-panels,
+html[data-watch-app="true"].watch-search-view.watch-search-has-player #screen-home .home-video,
+html[data-watch-app="true"].watch-search-view.watch-search-has-player #screen-home .video-stage {
+  visibility: visible;
+}
+
+html[data-watch-app="true"].watch-search-view.watch-search-has-player #screen-home .video-stage {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 80;
+  width: min(390px, calc(100vw - 32px));
+  max-height: none;
+  border: 1px solid #444;
+  border-radius: 8px;
+  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.58);
+  pointer-events: auto;
+}
+
+.watch-rail-toggle {
+  display: none;
+}
+
+.watch-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+html[data-watch-app="true"] .search-actions.watch-search-actions {
+  grid-template-columns: 1fr 1.3fr 48px;
+}
+
+html[data-watch-app="true"] .search-result {
+  flex-shrink: 0;
+}
+
+html[data-watch-app="true"] .watch-drawer-backdrop {
+  position: absolute;
+  top: calc(var(--header-h) + var(--safe-top));
+  left: var(--watch-rail-w);
+  right: 0;
+  bottom: 0;
+  z-index: 38;
+  border: 0;
+  background: rgba(0, 0, 0, 0.56);
+  cursor: pointer;
+}
+
+html[data-watch-app="true"] .app-header,
+html[data-watch-app="true"] .bottom-nav {
+  z-index: 60;
+}
+
+@media (min-width: 760px) {
+  html[data-watch-app="true"] .app-header {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  html[data-watch-app="true"] .bottom-nav {
+    top: calc(var(--header-h) + var(--safe-top));
+    right: auto;
+    bottom: 0;
+    width: var(--watch-rail-open-w);
+    height: auto;
+    transform: translateX(-100%);
+    transition: transform 200ms ease;
+    padding: 12px 8px;
+    padding-bottom: max(12px, var(--safe-bottom));
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 6px;
+    border-top: 0;
+    border-right: 1px solid var(--border);
+  }
+
+  html[data-watch-app="true"] .nav-btn {
+    width: 72px;
+    min-height: 66px;
+    flex: 0 0 auto;
+    border-radius: 6px;
+  }
+
+  html[data-watch-app="true"] .nav-btn:hover,
+  html[data-watch-app="true"] .nav-btn.active {
+    background: var(--surface);
+  }
+
+  html[data-watch-app="true"].watch-rail-open {
+    --watch-rail-w: var(--watch-rail-open-w);
+  }
+
+  html[data-watch-app="true"].watch-rail-open .bottom-nav {
+    transform: none;
+    box-shadow: 18px 0 54px rgba(0, 0, 0, 0.42);
+  }
+
+  html[data-watch-app="true"] .watch-rail-toggle {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  html[data-watch-app="true"] .watch-rail-toggle:hover {
+    background: var(--surface2);
+  }
+
+  html[data-watch-app="true"] .watch-rail-toggle .icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 200ms ease;
+  }
+
+  html[data-watch-app="true"].watch-rail-open .watch-rail-toggle .icon {
+    transform: rotate(180deg);
+  }
+
+  html[data-watch-app="true"] .app-header {
+    grid-template-columns: auto minmax(150px, 1fr) minmax(280px, 640px) minmax(120px, 1fr);
+    gap: 12px 20px;
+  }
+
+  html[data-watch-app="true"] .screen {
+    left: var(--watch-rail-w);
+    bottom: 0;
+  }
+
+  html[data-watch-app="true"] #screen-home {
+    transition: left 200ms ease;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 390px);
+    grid-template-rows: auto auto;
+    align-content: start;
+    max-width: 1564px;
+    margin-inline: auto;
+    column-gap: 28px;
+    padding: 24px 28px 48px;
+  }
+
+  html[data-watch-app="true"] #screen-home .player-device,
+  html[data-watch-app="true"] #screen-home .ipod-screen {
+    display: contents;
+  }
+
+  html[data-watch-app="true"] #screen-home .home-panels {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    height: auto;
+    margin: 0;
+  }
+
+  html[data-watch-app="true"][data-ui-theme="default"] #screen-home:has(.home-video.is-active) .home-panels {
+    height: auto;
+  }
+
+  html[data-watch-app="true"][data-ui-theme="default"] #screen-home:has(.home-video.is-active) .home-video.is-active {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    transform: none;
+  }
+
+  html[data-watch-app="true"] #screen-home .video-stage {
+    width: 100%;
+    max-height: calc(100vh - var(--header-h) - 210px);
+    border-radius: 10px;
+    box-shadow: 0 14px 44px rgba(0, 0, 0, 0.32);
+  }
+
+  html[data-watch-app="true"] #screen-home .player-display-info {
+    grid-column: 1;
+    grid-row: 2;
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 18px 2px 0;
+    text-align: left;
+  }
+
+  html[data-watch-app="true"] #screen-home .track-title {
+    max-width: none;
+    margin: 0 0 7px;
+    font-size: 21px;
+    line-height: 1.38;
+    text-align: left;
+  }
+
+  html[data-watch-app="true"] #screen-home .track-artist {
+    max-width: none;
+    margin: 0 0 14px;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  html[data-watch-app="true"] #screen-home .home-queue {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: start;
+    width: 100%;
+    max-height: calc(100vh - var(--header-h) - 48px);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #151515;
+  }
+
+  html[data-watch-app="true"] #screen-home .home-queue-toggle {
+    min-height: 70px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  html[data-watch-app="true"] #screen-home .home-queue-body {
+    max-height: calc(100vh - var(--header-h) - 122px);
+    overflow-y: auto;
+  }
+
+  html[data-watch-app="true"] #screen-home .home-queue-list {
+    padding: 8px;
+  }
+
+  html[data-watch-app="true"] .screen:not(#screen-home) {
+    right: auto;
+    z-index: 40;
+    width: min(var(--watch-drawer-w), calc(100vw - var(--watch-rail-w)));
+    padding: 24px 24px 48px;
+    border-right: 1px solid var(--border);
+    background: #121212;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(-28px);
+    box-shadow: 18px 0 54px rgba(0, 0, 0, 0.42);
+    transition: opacity 180ms ease, transform 220ms ease, visibility 0s linear 220ms;
+  }
+
+  html[data-watch-app="true"] .screen:not(#screen-home).screen-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(0);
+    transition: opacity 180ms ease, transform 220ms ease;
+  }
+
+  html[data-watch-app="true"] #screen-settings .settings-card {
+    border-radius: 6px;
+  }
+
+  html[data-watch-app="true"] #addPanelSearch:not(.hidden) .search-results {
+    gap: 18px;
+    padding: 8px 0 100px;
+  }
+
+  html[data-watch-app="true"] .search-result {
+    padding: 0 0 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #181818;
+  }
+
+  html[data-watch-app="true"] .search-result-main {
+    display: block;
+  }
+
+  html[data-watch-app="true"] .search-thumb {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border-radius: 0;
+  }
+
+  html[data-watch-app="true"] .search-meta {
+    min-height: 64px;
+    padding: 12px 14px 0;
+  }
+
+  html[data-watch-app="true"] .search-title {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  html[data-watch-app="true"] .search-actions {
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 759px) {
+  html[data-watch-app="true"] {
+    --watch-rail-w: 0px;
+    --header-h: 112px;
+  }
+
+  html[data-watch-app="true"] .watch-rail-toggle {
+    display: none;
+  }
+
+  html[data-watch-app="true"].watch-rail-open {
+    --watch-rail-w: 0px;
+  }
+
+  html[data-watch-app="true"] .bottom-nav {
+    transform: none;
+  }
+
+  html[data-watch-app="true"] .app-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: 44px 48px;
+    gap: 0 12px;
+    padding: 8px 16px 12px;
+  }
+
+  html[data-watch-app="true"] .app-logo {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  html[data-watch-app="true"] .watch-home-brand-mark {
+    display: none;
+  }
+
+  html[data-watch-app="true"] .watch-home-back {
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 36px;
+    padding: 0 8px;
+  }
+
+  html[data-watch-app="true"] .watch-home-search {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+  }
+
+  html[data-watch-app="true"] .watch-drawer-backdrop {
+    left: 0;
+    bottom: calc(var(--nav-h) + var(--safe-bottom));
+  }
+
+  html[data-watch-app="true"] #screen-home {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  html[data-watch-app="true"] #screen-home .home-video.is-active {
+    padding: 0;
+  }
+
+  html[data-watch-app="true"][data-ui-theme="default"] #screen-home:has(.home-video.is-active) .home-panels {
+    height: auto;
+  }
+
+  html[data-watch-app="true"][data-ui-theme="default"] #screen-home:has(.home-video.is-active) .home-video.is-active {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    transform: none;
+  }
+
+  html[data-watch-app="true"] #screen-home .video-stage {
+    border-radius: 0;
+  }
+
+  html[data-watch-app="true"] #screen-home .player-display-info,
+  html[data-watch-app="true"] #screen-home .home-queue {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  html[data-watch-app="true"] #screen-home .player-display-info {
+    width: calc(100% - 32px);
+    padding-top: 16px;
+    text-align: left;
+  }
+
+  html[data-watch-app="true"] .watch-home-meta-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  html[data-watch-app="true"] .watch-home-actions {
+    width: 100%;
+  }
+
+  html[data-watch-app="true"] .watch-home-actions button,
+  html[data-watch-app="true"] .watch-home-actions a {
+    flex: 1;
+    padding: 0 10px;
+  }
+
+  html[data-watch-app="true"].watch-search-view .search-result {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    row-gap: 10px;
+  }
+
+  html[data-watch-app="true"].watch-search-view .search-thumb {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  html[data-watch-app="true"].watch-search-view .search-meta {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  html[data-watch-app="true"].watch-search-view .search-actions {
+    grid-column: 1;
+    grid-row: 3;
+    width: 100%;
+  }
+
+  html[data-watch-app="true"].watch-search-view.watch-search-has-player #screen-home .video-stage {
+    right: 12px;
+    bottom: calc(var(--nav-h) + var(--safe-bottom) + 12px);
+    width: min(200px, 56vw);
+  }
+
+  html[data-watch-app="true"] #screen-home .home-queue {
+    width: calc(100% - 32px);
+  }
+
+  html[data-watch-app="true"] .screen:not(#screen-home) {
+    z-index: 40;
+    background: #121212;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(-100%);
+    transition: opacity 180ms ease, transform 220ms ease, visibility 0s linear 220ms;
+  }
+
+  html[data-watch-app="true"] .screen:not(#screen-home).screen-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(0);
+    transition: opacity 180ms ease, transform 220ms ease;
+  }
+
+  html[data-watch-app="true"] .search-result {
+    padding: 0 0 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  html[data-watch-app="true"] .search-result-main {
+    display: block;
+  }
+
+  html[data-watch-app="true"] .search-thumb {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border-radius: 0;
+  }
+
+  html[data-watch-app="true"] .search-meta,
+  html[data-watch-app="true"] .search-actions {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-watch-app="true"] .screen:not(#screen-home) {
+    transition: none;
+  }
+}
+
+/* /watch 검색 결과 전체 화면.
+   .screen:not(#screen-home) 서랍 규칙과 명시도가 같으므로 반드시 이 파일 끝에 둔다. */
+html[data-watch-app="true"].watch-search-view #screen-add {
+  left: var(--watch-rail-w);
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  width: auto;
+  max-width: none;
+  padding: 24px 32px 56px;
+  overflow: hidden;
+  border: 0;
+  background: #101010;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+  box-shadow: none;
+  transition: none;
+}
+
+@media (max-width: 759px) {
+  html[data-watch-app="true"].watch-search-view #screen-add {
+    left: 0;
+    bottom: calc(var(--nav-h) + var(--safe-bottom));
+    padding: 16px 14px 36px;
+  }
+}
+
+/* /watch 에서 #screen-add 는 검색 결과 전용 화면이다(서랍으로 열리지 않는다).
+   서랍용 visibility 지연 전환이 남아 있으면 결과를 닫을 때 좁은 서랍이 잠깐 스쳐 보인다. */
+html[data-watch-app="true"] .screen#screen-add {
+  transition: none;
+}
+
+/* 채널 화면의 롱폼/쇼츠 필터 */
+html[data-watch-app="true"] .watch-channel-filter {
+  display: flex;
+  gap: 8px;
+  margin: 0 0 18px;
+}
+
+html[data-watch-app="true"] .watch-channel-filter.hidden {
+  display: none;
+}
+
+html[data-watch-app="true"] .watch-channel-filter-btn {
+  min-height: 34px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 17px;
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+html[data-watch-app="true"] .watch-channel-filter-btn:hover {
+  background: #3a3a3a;
+}
+
+html[data-watch-app="true"] .watch-channel-filter-btn.active {
+  background: #f1f1f1;
+  color: #0f0f0f;
+}
+
+/* 더 불러오기 감지용 요소. flex 목록 안에서 눌려 높이가 0이 되면
+   IntersectionObserver 가 안 걸려서 결과가 25개에서 멈춘다. */
+html[data-watch-app="true"] .scroll-sentinel {
+  flex: 0 0 auto;
+  min-height: 8px;
+}
+
+html[data-watch-app="true"] .search-more-row {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 24px;
+}
+
+html[data-watch-app="true"] .search-more-row button {
+  min-height: 40px;
+  padding: 0 28px;
+  border-radius: 20px;
+}
+
+/* ── 영상이 끝났을 때 우리가 덮는 종료 화면 ─────────────────────────── */
+html[data-watch-app="true"] .video-stage {
+  position: relative;
+}
+
+html[data-watch-app="true"] .watch-endscreen {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 20px 20px;
+  overflow: hidden;
+  background: rgba(9, 9, 9, 0.95);
+}
+
+html[data-watch-app="true"] .watch-endscreen.hidden {
+  display: none;
+}
+
+html[data-watch-app="true"] .watch-endscreen-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+html[data-watch-app="true"] .watch-endscreen-channel,
+html[data-watch-app="true"] .watch-endscreen-replay {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px 0 6px;
+  border: 0;
+  border-radius: 20px;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+html[data-watch-app="true"] .watch-endscreen-replay {
+  padding: 0 18px;
+  background: var(--surface2);
+}
+
+html[data-watch-app="true"] .watch-endscreen-channel:not(:disabled):hover,
+html[data-watch-app="true"] .watch-endscreen-replay:hover {
+  background: #3a3a3a;
+}
+
+html[data-watch-app="true"] .watch-endscreen-channel:disabled {
+  cursor: default;
+}
+
+html[data-watch-app="true"] .watch-endscreen-replay .icon {
+  width: 20px;
+  height: 20px;
+}
+
+html[data-watch-app="true"] .watch-endscreen-avatar {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background-color: #343434;
+  background-position: center;
+  background-size: cover;
+  color: #fff;
+  font-weight: 700;
+}
+
+html[data-watch-app="true"] .watch-endscreen-avatar.has-photo {
+  color: transparent;
+}
+
+html[data-watch-app="true"] .watch-endscreen-channel-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html[data-watch-app="true"] .watch-endscreen-label {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+html[data-watch-app="true"] .watch-endscreen-cards {
+  min-height: 0;
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  align-content: start;
+}
+
+html[data-watch-app="true"] .watch-endscreen-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+html[data-watch-app="true"] .watch-endscreen-thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  background-color: #202020;
+  background-position: center;
+  background-size: cover;
+}
+
+html[data-watch-app="true"] .watch-endscreen-card:hover .watch-endscreen-thumb {
+  outline: 2px solid #f1f1f1;
+  outline-offset: 2px;
+}
+
+html[data-watch-app="true"] .watch-endscreen-dur {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.8);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+html[data-watch-app="true"] .watch-endscreen-card-title {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* 플레이어 왼쪽 위 제목·채널 줄을 덮는다(오른쪽 볼륨·자막·설정은 비워 둔다) */
+html[data-watch-app="true"] .watch-title-shield {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: min(62%, 620px);
+  height: clamp(34px, 11%, 60px);
+  cursor: pointer;
+}
+
+html[data-watch-app="true"] .watch-title-shield.hidden {
+  display: none;
+}
+
+@media (max-width: 759px) {
+  html[data-watch-app="true"] .watch-endscreen {
+    padding: 12px 12px 14px;
+    gap: 8px;
+  }
+
+  html[data-watch-app="true"] .watch-endscreen-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  html[data-watch-app="true"] .watch-endscreen-label {
+    display: none;
+  }
+}
+
+/* 겹쳐 띄우는 것들을 담는 층. `.video-stage > div` 의 !important 크기 강제를 피하려고
+   이 층만 직속 자식으로 두고 안쪽에 넣는다. */
+html[data-watch-app="true"] .watch-stage-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+html[data-watch-app="true"] .watch-stage-layer > * {
+  pointer-events: auto;
+}
+
+/* 마지막 20초 클릭 차단막 — 아래 재생바 줄은 덮지 않는다 */
+html[data-watch-app="true"] .watch-endguard {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  /* 유튜브 컨트롤 줄(시간·재생바·버튼)은 건드리지 않는다 — 그 위만 막는다. */
+  bottom: clamp(56px, 20%, 128px);
+  z-index: 1;
+  cursor: pointer;
+}
+
+html[data-watch-app="true"] .watch-endguard.hidden {
+  display: none;
+}
+
+/* 다음 재생 머리줄 오른쪽의 자동 재생 스위치 (/watch 전용) */
+.watch-autoplay {
+  display: none;
+}
+
+html[data-watch-app="true"] #screen-home .home-queue {
+  position: relative;
+}
+
+html[data-watch-app="true"] .watch-autoplay {
+  position: absolute;
+  top: 16px;
+  right: 48px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+html[data-watch-app="true"] .watch-autoplay-label {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+html[data-watch-app="true"] .watch-autoplay-switch {
+  position: relative;
+  width: 38px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: #4a4a4a;
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+
+html[data-watch-app="true"] .watch-autoplay-switch[aria-checked="true"] {
+  background: var(--accent);
+}
+
+html[data-watch-app="true"] .watch-autoplay-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 160ms ease;
+}
+
+html[data-watch-app="true"] .watch-autoplay-switch[aria-checked="true"] .watch-autoplay-knob {
+  transform: translateX(18px);
+}
+
+@media (max-width: 759px) {
+  html[data-watch-app="true"] .watch-autoplay {
+    top: 14px;
+    right: 44px;
+  }
+
+  html[data-watch-app="true"] .watch-autoplay-label {
+    font-size: 12px;
+  }
+}
+
+/* 알고리즘 탭 (/watch 전용) */
+.nav-btn-reco {
+  display: none;
+}
+
+html[data-watch-app="true"] .nav-btn-reco {
+  display: flex;
+}
+
+html[data-watch-app="true"] .watch-reco-head {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+html[data-watch-app="true"] .watch-reco-head p,
+html[data-watch-app="true"] .watch-reco-head h2 {
+  margin: 0;
+}
+
+html[data-watch-app="true"] .watch-reco-head p {
+  margin-bottom: 4px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+html[data-watch-app="true"] .watch-reco-head h2 {
+  font-size: 20px;
+}
+
+html[data-watch-app="true"] #recoResults {
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+}
+
+html[data-watch-app="true"] #recoResults .search-result {
+  flex-shrink: 0;
+}
+
+html[data-watch-app="true"] #recoHint.hidden {
+  display: none;
+}
+
+/* 채널 화면의 구독 버튼 */
+html[data-watch-app="true"] .watch-sub-btn {
+  min-height: 36px;
+  margin-left: auto;
+  margin-right: 8px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 18px;
+  background: #f1f1f1;
+  color: #0f0f0f;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+html[data-watch-app="true"] .watch-sub-btn.is-on {
+  background: var(--surface2);
+  color: var(--text);
+}
+
+html[data-watch-app="true"] .watch-sub-btn.hidden {
+  display: none;
+}
+
+/* ── 모바일(<=759px) /watch 화면 정리 ────────────────────────────────
+   PC·태블릿(>=760px) 규칙은 건드리지 않는다. 이 블록은 좁은 화면 전용이다. */
+@media (max-width: 759px) {
+  /* 헤더를 조금 낮춘다 (44+48 -> 40+44) */
+  html[data-watch-app="true"] {
+    --header-h: 100px;
+  }
+
+  html[data-watch-app="true"] .app-header {
+    grid-template-rows: 40px 44px;
+    padding: 6px 12px 10px;
+  }
+
+  html[data-watch-app="true"] .watch-home-search {
+    height: 38px;
+  }
+
+  /* 보관함용 세로 가운데 정렬(min-height 470px + justify-content:center)이
+     /watch 에서는 영상 위아래로 45px 넘는 검은 여백을 만든다.
+     PC 처럼 display:contents 로 풀어서 영상이 헤더 바로 밑에 붙게 한다.
+     `:has(.home-queue.is-empty)` 규칙보다 명시도가 높아야 이긴다. */
+  html[data-watch-app="true"][data-ui-theme="default"] #screen-home:has(.home-queue.is-empty) .player-device,
+  html[data-watch-app="true"] #screen-home .player-device,
+  html[data-watch-app="true"] #screen-home .ipod-screen {
+    display: contents;
+  }
+
+  html[data-watch-app="true"] #screen-home {
+    padding-top: 0;
+  }
+
+  /* display:contents 라서 margin/width 가 무시되고 있었다.
+     제목·채널·버튼이 화면 밖으로 삐져나온 원인. */
+  html[data-watch-app="true"] #screen-home .player-display-info {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 12px 16px 0;
+    text-align: left;
+  }
+
+  /* 제목 — 유튜브처럼 왼쪽 정렬, 두 줄까지 보여 준다(가운데 정렬 + 한 줄 말줄임 대신) */
+  html[data-watch-app="true"] #screen-home .track-title {
+    display: -webkit-box;
+    max-width: none;
+    margin: 0;
+    overflow: hidden;
+    font-size: 16px;
+    line-height: 1.38;
+    text-align: left;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  html[data-watch-app="true"] .watch-home-meta-row {
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  html[data-watch-app="true"] .watch-home-channel {
+    width: 100%;
+    padding: 4px 8px 4px 4px;
+  }
+
+  html[data-watch-app="true"] .watch-home-channel-avatar {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+  }
+
+  /* 버튼 두 개가 가로폭을 넘어 `YouTube에서 보기` 가 잘려 나갔다 */
+  html[data-watch-app="true"] .watch-home-actions button,
+  html[data-watch-app="true"] .watch-home-actions a {
+    min-width: 0;
+    flex: 1 1 0;
+    min-height: 36px;
+    padding: 0 10px;
+  }
+
+  html[data-watch-app="true"] .watch-home-actions button span,
+  html[data-watch-app="true"] .watch-home-actions a span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  html[data-watch-app="true"] .watch-home-actions .icon {
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  html[data-watch-app="true"] #screen-home .home-queue {
+    margin-top: 14px;
+  }
+}
+
+/* 모바일 검색 결과 — 한 칸이 349px 이라 화면에 1.6개밖에 안 들어갔다. 여백을 줄인다. */
+@media (max-width: 759px) {
+  html[data-watch-app="true"] .watch-search-results-head {
+    min-height: 44px;
+    margin-bottom: 10px;
+  }
+
+  html[data-watch-app="true"] .watch-search-results-head h2 {
+    font-size: 18px;
+  }
+
+  html[data-watch-app="true"] .watch-search-results-head p {
+    margin-bottom: 3px;
+    font-size: 12px;
+  }
+
+  html[data-watch-app="true"] .watch-channel-filter {
+    margin-bottom: 12px;
+  }
+
+  html[data-watch-app="true"] .watch-channel-filter-btn {
+    min-height: 32px;
+    padding: 0 14px;
+  }
+
+  html[data-watch-app="true"].watch-search-view #searchResults {
+    gap: 14px;
+  }
+
+  html[data-watch-app="true"].watch-search-view .search-result {
+    row-gap: 8px;
+    padding-bottom: 4px;
+  }
+
+  html[data-watch-app="true"].watch-search-view .search-title {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 1.36;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  html[data-watch-app="true"].watch-search-view .search-artist {
+    margin-top: 3px;
+    font-size: 12px;
+  }
+
+  html[data-watch-app="true"] .search-actions {
+    min-height: 36px;
+  }
+}
+
+/* 채널 줄이 눌려 프로필 동그라미가 버튼 위로 삐져나오던 것 (>=760px) */
+@media (min-width: 760px) {
+  html[data-watch-app="true"] .watch-home-channel {
+    /* 기준 너비를 220px 로 정해 둔다. 이 너비 + 버튼 줄이 안 들어가면 줄이 나뉜다.
+       `auto` 로 두면 채널명 길이에 따라 넓은 화면에서도 줄이 나뉘어 버린다.
+       모바일은 세로 배치라 flex-basis 가 높이로 잡히므로 이 규칙에서 뺀다. */
+    flex: 1 1 220px;
+  }
+}
+
+/* ── 세로 패드(760~1023px): 영상을 가로로 꽉 채우고 다음 재생을 아래로 ──────────
+   가로 패드·PC(1024px 이상)는 기존 좌우 2단 배치 그대로다. */
+@media (min-width: 760px) and (max-width: 1023px) {
+  html[data-watch-app="true"] #screen-home {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+  }
+
+  html[data-watch-app="true"] #screen-home .home-panels {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  html[data-watch-app="true"] #screen-home .player-display-info {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  /* 좌우 2단일 때 화면 높이에 맞춰 잘라 두던 제한을 푼다.
+     아래로 내려왔으니 목록이 길면 화면이 스크롤되면 된다. */
+  html[data-watch-app="true"] #screen-home .home-queue {
+    grid-column: 1;
+    grid-row: 3;
+    margin-top: 22px;
+    max-height: none;
+  }
+
+  html[data-watch-app="true"] #screen-home .home-queue-body {
+    max-height: none;
+  }
+
+  html[data-watch-app="true"] #screen-home .video-stage {
+    max-height: calc(100vh - var(--header-h) - 260px);
+  }
+}

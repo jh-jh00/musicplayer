@@ -1,0 +1,10 @@
+node_modules/
+.wrangler/
+public/
+compiled/
+.dev.vars*
+.env*
+*.log
+*.pem
+*.key
+*client_secret*.json

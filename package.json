@@ -1,0 +1,17 @@
+{
+  "name": "playlist-player",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "db:init": "wrangler d1 execute youtube_player_db --config wrangler.jsonc --remote --file=schema.sql",
+    "deploy": "node scripts/deploy-clean.mjs",
+    "test": "node scripts/deploy-clean.mjs --build-only"
+  },
+  "devDependencies": {
+    "wrangler": "^4.85.0"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "type": "module"
+}

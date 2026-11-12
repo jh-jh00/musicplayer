@@ -1,0 +1,5032 @@
+:root {
+  --bg: #0f0f0f;
+  --surface: #212121;
+  --surface2: #181818;
+  --text: #ffffff;
+  --text-muted: #aaaaaa;
+  --accent: #e03e3e;
+  --accent-soft: #b83232;
+  --link: #b3b3b3;
+  --border: #303030;
+  --header-h: 56px;
+  --nav-h: 56px;
+  --mini-h: 64px;
+  --page-x: 16px;
+  --player-meta-gap: 15px;
+  --player-controls-gap: 15px;
+  --player-video-gap: 25px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.2, 0.64, 1);
+  --dur-fast: 0.2s;
+  --dur-normal: 0.32s;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  background: var(--bg);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  font-family: Roboto, system-ui, sans-serif;
+  color: var(--text);
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.app {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  height: 100%;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+@media (min-width: 520px) {
+  body {
+    background: #000;
+  }
+
+  .app {
+    box-shadow: 0 0 0 1px var(--border);
+  }
+}
+
+.hidden {
+  display: none !important;
+}
+
+.app-header {
+  height: calc(var(--header-h) + var(--safe-top));
+  padding-top: var(--safe-top);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-left: var(--page-x);
+  padding-right: var(--page-x);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 30;
+  background: var(--bg);
+}
+
+.header-auth {
+  flex-shrink: 0;
+}
+
+.btn-google,
+.btn-google-settings {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-google {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.btn-google .icon-google,
+.btn-google-settings .icon-google {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.header-user {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 20px;
+  max-width: 140px;
+}
+
+.header-avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--surface);
+}
+
+.header-user-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-logo {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.screen {
+  position: absolute;
+  top: calc(var(--header-h) + var(--safe-top));
+  left: 0;
+  right: 0;
+  bottom: calc(var(--nav-h) + var(--safe-bottom));
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px var(--page-x);
+  padding-bottom: calc(var(--mini-h) + 16px);
+  background: var(--bg);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(6px);
+  z-index: 1;
+  backface-visibility: hidden;
+  transition:
+    opacity var(--dur-normal) var(--ease-out),
+    transform var(--dur-normal) var(--ease-out),
+    visibility 0s linear var(--dur-normal);
+}
+
+.screen-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  z-index: 2;
+  transition:
+    opacity var(--dur-normal) var(--ease-out),
+    transform var(--dur-normal) var(--ease-out),
+    visibility 0s;
+}
+
+#screen-home {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#screen-home .mode-segment {
+  margin-left: var(--page-x);
+  margin-right: var(--page-x);
+}
+
+.watch-launch-row {
+  display: flex;
+  justify-content: flex-end;
+  margin: -10px var(--page-x) 10px;
+}
+
+.watch-launch-row.hidden {
+  display: none;
+}
+
+.watch-launch-btn {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.watch-launch-btn:hover,
+.watch-launch-btn:active {
+  color: var(--text);
+  background: var(--surface2);
+}
+
+.watch-launch-btn:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+
+.watch-launch-btn .icon {
+  width: 17px;
+  height: 17px;
+}
+
+#screen-home .player-chrome {
+  padding-left: var(--page-x);
+  padding-right: var(--page-x);
+  margin-top: var(--player-video-gap);
+}
+
+.ipod-device,
+.ipod-screen,
+.player-display-info {
+  display: contents;
+}
+
+.home-queue {
+  margin-top: 20px;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+}
+
+.home-queue-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  padding: 12px var(--page-x);
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.home-queue-toggle-label {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.home-queue-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.home-queue-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.home-queue-count {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.home-queue-chevron {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.home-queue.is-collapsed .home-queue-chevron {
+  transform: rotate(-90deg);
+}
+
+.home-queue-body {
+  padding-bottom: 8px;
+}
+
+.home-queue-body[hidden] {
+  display: none !important;
+}
+
+.home-queue-clear {
+  font-size: 14px;
+  color: var(--link);
+  flex-shrink: 0;
+}
+
+.home-queue-clear:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.home-queue-add {
+  margin-bottom: 12px;
+}
+
+.home-queue-add .field-input {
+  font-size: 14px;
+}
+
+.home-queue-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.home-queue-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px var(--page-x);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.home-queue-item.cur {
+  color: var(--text);
+}
+
+.home-queue-item.cur .home-queue-meta-title {
+  font-weight: 700;
+}
+
+.home-queue-item.cur .home-queue-thumb {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.55);
+}
+
+.home-queue-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  background: var(--surface) center/cover no-repeat;
+  flex-shrink: 0;
+}
+
+.home-queue-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.home-queue-meta-title {
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-queue-meta-artist {
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-queue-empty {
+  padding: 20px var(--page-x) 8px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.home-queue-more {
+  padding: 12px var(--page-x) 4px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.track-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.track-actions .btn-text {
+  font-size: 13px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.screen-title {
+  margin: 0 0 16px;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+#screen-settings {
+  overflow-y: auto;
+}
+
+.library-segment,
+.add-segment,
+.search-type-segment {
+  flex-shrink: 0;
+}
+
+#screen-add .add-panel:not(.hidden) {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#addPanelSearch:not(.hidden) .search-results {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+#addPanelUrl:not(.hidden) {
+  overflow-y: auto;
+}
+
+#addPanelSearch > :not(.search-results):not(.scroll-sentinel),
+.library-queue-hint,
+.library-panel .search-input,
+.library-panel .detail-actions,
+.library-panel .btn-back,
+#libraryDetail h3 {
+  flex-shrink: 0;
+}
+
+#screen-add {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.screen-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+.screen-toolbar h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.mode-segment {
+  display: flex;
+  background: var(--surface);
+  border-radius: 24px;
+  padding: 4px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.mode-segment-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  padding: 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.mode-segment-indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  border-radius: 20px;
+  background: var(--text);
+  transition: transform var(--dur-normal) var(--ease-spring);
+  z-index: 0;
+}
+
+.add-segment {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.add-segment-btn {
+  flex: 1;
+  border: none;
+  background: var(--surface);
+  color: var(--text-muted);
+  padding: 10px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.add-segment-btn.active {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.library-segment {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.library-segment-btn {
+  flex: 1;
+  border: none;
+  background: var(--surface);
+  color: var(--text-muted);
+  padding: 10px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.library-segment-btn.active {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.library-queue-hint {
+  margin: 0 0 12px;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.queue-drag-handle {
+  width: 36px;
+  min-height: 44px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: grab;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  flex-shrink: 0;
+  touch-action: none;
+}
+
+.queue-drag-handle span {
+  width: 18px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.queue-drag-handle:active {
+  cursor: grabbing;
+  color: var(--text);
+}
+
+.track-item.is-dragging {
+  margin: 0;
+  padding: 10px 0;
+  box-sizing: border-box;
+  pointer-events: none;
+  background: var(--surface);
+  border-radius: 10px;
+  border-bottom: none;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  will-change: transform;
+  transform-origin: center center;
+}
+
+#libraryWaitingList.is-reordering .track-item {
+  user-select: none;
+}
+
+#libraryWaitingList.is-reordering .track-item:not(.is-dragging) {
+  transition: transform 0.18s var(--ease-out);
+}
+
+.queue-drag-placeholder {
+  list-style: none;
+  margin: 0;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  box-sizing: border-box;
+}
+
+.history-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.history-actions .btn-text {
+  font-size: 11px;
+  padding: 4px 5px;
+  white-space: nowrap;
+}
+
+.settings-note {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.add-panel {
+  min-height: 0;
+}
+
+.search-hint {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.search-hint-warn {
+  color: #ffb4a2;
+}
+
+.search-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scroll-sentinel {
+  height: 1px;
+  margin-top: 12px;
+}
+
+.scroll-sentinel.is-loading::after {
+  content: "불러오는 중...";
+  display: block;
+  padding: 12px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.search-empty {
+  padding: 24px 12px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.search-result {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  padding: 10px;
+  background: var(--surface);
+  border-radius: 12px;
+}
+
+.search-result-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.search-thumb {
+  width: 72px;
+  height: 54px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: var(--surface2) center/cover no-repeat;
+}
+
+.search-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.search-title {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.search-artist {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.35fr 44px;
+  gap: 6px;
+  width: 100%;
+}
+
+.search-actions-channel {
+  grid-template-columns: 1fr 44px;
+}
+
+.search-action-btn {
+  min-height: 40px;
+  border: none;
+  border-radius: 10px;
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0 8px;
+  white-space: nowrap;
+  touch-action: manipulation;
+}
+
+.search-action-btn-accent {
+  color: var(--text);
+  background: var(--surface2);
+}
+
+.search-action-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.search-action-btn:active {
+  opacity: 0.85;
+}
+
+.search-type-segment {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.search-type-btn {
+  flex: 1;
+  border: none;
+  background: var(--surface2);
+  color: var(--text-muted);
+  padding: 8px 10px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.search-type-btn.active {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.search-thumb-round {
+  border-radius: 50%;
+  aspect-ratio: 1;
+  height: 54px;
+  width: 54px;
+}
+
+.search-actions .btn-text {
+  font-size: 11px;
+  padding: 4px 5px;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+/* legacy – search uses .search-action-btn */
+
+.mode-segment-indicator.mode-video {
+  transform: translateX(100%);
+}
+
+.mode-segment-btn.active {
+  color: var(--bg);
+  background: transparent;
+}
+
+.quality-segment {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.quality-segment-btn {
+  flex: 1;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.quality-segment-btn.active {
+  background: #3a3a3a;
+  color: var(--text);
+  border-color: #5a5a5a;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 6px 14px rgba(0, 0, 0, 0.18);
+}
+
+.quality-segment-btn:active {
+  transform: scale(0.98);
+}
+
+.home-panels {
+  width: 100%;
+  position: relative;
+}
+
+.home-panels > .home-music,
+.home-panels > .home-video {
+  transition: opacity var(--dur-normal) var(--ease-out);
+}
+
+.home-panels > .home-music:not(.is-active) {
+  display: none;
+}
+
+.home-panels > .home-video:not(.is-active) {
+  display: none;
+}
+
+.home-music.is-active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 12px var(--page-x) 8px;
+}
+
+.home-video.is-active {
+  position: relative;
+  padding-left: var(--page-x);
+  padding-right: var(--page-x);
+}
+
+#screen-home:has(.home-music.is-active) .player-chrome {
+  margin-top: 12px;
+}
+
+#screen-home:has(.home-video.is-active) .player-chrome {
+  margin-top: var(--player-video-gap);
+}
+
+.album-art {
+  width: min(220px, 68vw);
+  aspect-ratio: 1;
+  margin: 0 auto 16px;
+  border-radius: 12px;
+  background: var(--surface) center/cover no-repeat;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  transition: transform var(--dur-normal) var(--ease-out), box-shadow var(--dur-normal) var(--ease-out);
+}
+
+.album-art.has-track {
+  transform: scale(1);
+}
+
+.track-title {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-artist {
+  margin: 0 0 var(--player-meta-gap);
+  font-size: 14px;
+  color: var(--text-muted);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: var(--player-controls-gap);
+}
+
+.progress-row:has(.progress-bar-hit.is-grabbing) {
+  color: var(--text);
+}
+
+.progress-bar-hit {
+  position: relative;
+  flex: 1;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  padding: 18px 0;
+}
+
+.progress-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 5px;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  overflow: visible;
+  pointer-events: none;
+  transition: height 0.28s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.progress-bar-hit.has-track.is-grabbing .progress-bar {
+  height: 9px;
+}
+
+@media (hover: hover) {
+  .progress-bar-hit.has-track:hover .progress-bar {
+    height: 9px;
+  }
+}
+
+.progress-bar span#musicFill {
+  position: relative;
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width 0.15s linear;
+}
+
+.progress-bar-hit.is-grabbing span#musicFill {
+  transition: none;
+}
+
+.progress-bar span#musicFill::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  transform: translate(50%, -50%);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .progress-bar-hit.has-track:hover span#musicFill::after {
+    opacity: 1;
+  }
+}
+
+.progress-bar-hit.is-grabbing span#musicFill::after {
+  opacity: 1;
+}
+
+.progress-range {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 36px;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.progress-range:disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.progress-range:focus {
+  outline: none;
+}
+
+.progress-range::-webkit-slider-runnable-track {
+  height: 5px;
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+}
+
+.progress-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
+  margin-top: -12px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  cursor: grab;
+}
+
+.progress-range:active::-webkit-slider-thumb {
+  cursor: grabbing;
+}
+
+.progress-range::-moz-range-track {
+  height: 5px;
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+}
+
+.progress-range::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: grab;
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.ctrl-btn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+
+.ctrl-btn:active {
+  transform: scale(0.92);
+}
+
+.ctrl-play {
+  width: 56px;
+  height: 56px;
+  background: var(--text);
+  color: var(--bg);
+  transition: transform var(--dur-fast) var(--ease-spring), background var(--dur-fast) var(--ease-out);
+}
+
+.ctrl-play:active {
+  transform: scale(0.94);
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.icon-sm {
+  width: 20px;
+  height: 20px;
+}
+
+.ctrl-play .icon {
+  width: 28px;
+  height: 28px;
+}
+
+.ctrl-play .icon-pause,
+.mini-play .icon-pause,
+#btnRepeat .icon-repeat-one {
+  display: none;
+}
+
+.ctrl-play.is-playing .icon-play,
+.mini-play.is-playing .icon-play {
+  display: none;
+}
+
+.ctrl-play.is-playing .icon-pause,
+.mini-play.is-playing .icon-pause {
+  display: block;
+}
+
+#btnRepeat.repeat-one .icon-repeat-all {
+  display: block;
+}
+
+#btnRepeat.repeat-one .icon-repeat-one {
+  display: none;
+}
+
+.ctrl-btn.active {
+  color: var(--text);
+}
+
+#btnShuffle.active,
+#btnRepeat.active {
+  color: var(--text);
+}
+
+#btnShuffle.active {
+  color: var(--accent);
+}
+
+.video-stage {
+  position: relative;
+  width: 100%;
+  min-height: 200px;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.video-stage:fullscreen,
+.video-stage:-webkit-full-screen {
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+  aspect-ratio: auto;
+  background: #000;
+}
+
+.video-stage:fullscreen #ytMount,
+.video-stage:-webkit-full-screen #ytMount {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-stage iframe,
+.video-stage > div {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.playlist-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.playlist-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+
+.playlist-card:active {
+  transform: scale(0.98);
+}
+
+.playlist-card.active {
+  outline: 2px solid var(--accent);
+}
+
+.playlist-card-name {
+  font-weight: 500;
+}
+
+.playlist-card-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.playlist-card-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.btn-icon {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.btn-icon:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-back {
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.library-detail {
+  margin-top: 8px;
+}
+
+.search-input,
+.field-input,
+.field-select,
+.field-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.field-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.feedback-textarea {
+  min-height: 96px;
+}
+
+.field-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0 0 12px;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.field-check input {
+  margin-top: 2px;
+  accent-color: var(--accent);
+  flex-shrink: 0;
+}
+
+.field-label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.field-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.field-row .field-input {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+.add-panel-url {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.url-target-card,
+.url-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  padding: 12px;
+}
+
+.url-target-card .field-select,
+.url-card .field-input,
+.url-card .field-textarea {
+  margin-bottom: 0;
+}
+
+.url-card-single {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025));
+}
+
+.url-main-input {
+  min-height: 44px;
+}
+
+.url-action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr 1.1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.url-action-grid .btn-primary,
+.url-action-grid .btn-secondary {
+  min-width: 0;
+  min-height: 44px;
+  border-radius: 14px;
+  padding: 0 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.url-action-grid .btn-secondary {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.url-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.url-card-head .field-label {
+  margin-bottom: 0;
+}
+
+.url-card-sub {
+  color: var(--text-muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.url-card-bulk .field-textarea {
+  min-height: 104px;
+}
+
+.url-card-bulk .btn-block {
+  margin-top: 10px;
+}
+
+#btnSearch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 82px;
+  line-height: 1;
+}
+
+#btnSearch .icon {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.detail-actions .btn-block {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+}
+
+.track-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.track-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.track-item-card {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 12px 0;
+  cursor: default;
+}
+
+.track-item-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.track-action-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr 44px;
+  gap: 6px;
+  width: 100%;
+}
+
+.track-action-bar-history {
+  grid-template-columns: 1fr 1fr 1.35fr 44px;
+}
+
+.track-item.cur {
+  color: var(--text);
+}
+
+.track-item.cur .track-info-title {
+  font-weight: 700;
+}
+
+.track-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: var(--surface) center/cover no-repeat;
+  flex-shrink: 0;
+}
+
+.track-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.track-info-title {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-info-artist {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-text,
+.btn-block {
+  border: none;
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--text);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.btn-text {
+  background: transparent;
+  color: var(--link);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.settings-card {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.settings-label {
+  margin: 0 0 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.settings-value {
+  margin: 0 0 12px;
+  font-size: 14px;
+}
+
+.mini-player {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--nav-h) + var(--safe-bottom));
+  height: var(--mini-h);
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--page-x);
+  gap: 8px;
+  z-index: 10;
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+  backface-visibility: hidden;
+  transition:
+    transform var(--dur-normal) var(--ease-out),
+    opacity var(--dur-normal) var(--ease-out);
+}
+
+.mini-player.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mini-player-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  min-width: 0;
+  padding: 0;
+}
+
+.mini-art {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  background: var(--surface) center/cover no-repeat;
+  flex-shrink: 0;
+}
+
+.mini-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.mini-title {
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mini-artist {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mini-play {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.bottom-nav {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(var(--nav-h) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  box-sizing: border-box;
+  display: flex;
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+  z-index: 20;
+}
+
+html[data-ui-theme="ipod"] {
+  --bg: #e7e4dc;
+  --surface: #f7f6f2;
+  --surface2: #dfddd6;
+  --text: #18212b;
+  --text-muted: #65717d;
+  --accent: #727984;
+  --accent-soft: #5e6670;
+  --link: #4d5966;
+  --border: rgba(60, 65, 72, 0.2);
+  --player-meta-gap: 10px;
+  --player-controls-gap: 10px;
+  color-scheme: light;
+}
+
+html[data-ui-theme="ipod"],
+html[data-ui-theme="ipod"] body {
+  background: #c8cbd1;
+}
+
+html[data-ui-theme="ipod"] body {
+  color: var(--text);
+}
+
+html[data-ui-theme="ipod"] .app {
+  background:
+    radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.78), transparent 34%),
+    linear-gradient(180deg, #f5f3ed 0%, #e4e1d8 56%, #cdc8bd 100%);
+  color: var(--text);
+}
+
+@media (min-width: 520px) {
+  html[data-ui-theme="ipod"] .app {
+    border-radius: 28px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.86),
+      inset 0 -14px 36px rgba(80, 74, 64, 0.2),
+      0 18px 70px rgba(0, 0, 0, 0.46);
+  }
+}
+
+html[data-ui-theme="ipod"] .app-header,
+html[data-ui-theme="ipod"] .bottom-nav,
+html[data-ui-theme="ipod"] .mini-player {
+  background: rgba(247, 246, 242, 0.88);
+  border-color: rgba(70, 75, 82, 0.18);
+  color: var(--text);
+  backdrop-filter: blur(16px);
+}
+
+html[data-ui-theme="ipod"] .screen {
+  background: transparent;
+}
+
+html[data-ui-theme="ipod"] .mode-segment,
+html[data-ui-theme="ipod"] .library-segment,
+html[data-ui-theme="ipod"] .add-segment,
+html[data-ui-theme="ipod"] .search-type-segment {
+  background: rgba(210, 213, 217, 0.8);
+  border: 1px solid rgba(93, 99, 106, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+html[data-ui-theme="ipod"] .mode-segment-indicator,
+html[data-ui-theme="ipod"] .library-segment-btn.active,
+html[data-ui-theme="ipod"] .add-segment-btn.active,
+html[data-ui-theme="ipod"] .search-type-btn.active {
+  background: #fbfbf8;
+  color: var(--text);
+  box-shadow: 0 5px 14px rgba(80, 78, 70, 0.14);
+}
+
+html[data-ui-theme="ipod"] .mode-segment-btn.active {
+  color: var(--text);
+}
+
+html[data-ui-theme="ipod"] .settings-card,
+html[data-ui-theme="ipod"] .playlist-card,
+html[data-ui-theme="ipod"] .url-target-card,
+html[data-ui-theme="ipod"] .url-card,
+html[data-ui-theme="ipod"] .search-result,
+html[data-ui-theme="ipod"] .gate-card,
+html[data-ui-theme="ipod"] .withdraw-card {
+  background: rgba(248, 247, 243, 0.9);
+  border: 1px solid rgba(86, 92, 100, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+html[data-ui-theme="ipod"] .field-input,
+html[data-ui-theme="ipod"] .field-select,
+html[data-ui-theme="ipod"] .field-textarea,
+html[data-ui-theme="ipod"] .search-input {
+  background: rgba(255, 255, 255, 0.64);
+  border-color: rgba(87, 93, 102, 0.22);
+  color: var(--text);
+}
+
+html[data-ui-theme="ipod"] .btn-primary {
+  background: linear-gradient(180deg, #8b929c, #68717d);
+  color: #fff;
+}
+
+html[data-ui-theme="ipod"] .btn-secondary,
+html[data-ui-theme="ipod"] .search-action-btn {
+  background: rgba(236, 235, 230, 0.92);
+  border: 1px solid rgba(81, 88, 96, 0.16);
+  color: var(--text);
+}
+
+html[data-ui-theme="ipod"] .album-art {
+  width: min(178px, 52vw);
+  border-radius: 7px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+}
+
+html[data-ui-theme="ipod"] .home-music.is-active {
+  width: min(318px, calc(100% - 32px));
+  margin: 12px auto 0;
+  padding: 14px;
+  border: 1px solid rgba(16, 20, 24, 0.45);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.13), transparent 26%),
+    #111923;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 12px 30px rgba(72, 70, 64, 0.24);
+}
+
+html[data-ui-theme="ipod"] .home-video.is-active .video-stage {
+  border: 1px solid rgba(16, 20, 24, 0.45);
+  background: #111923;
+  box-shadow: 0 12px 30px rgba(72, 70, 64, 0.24);
+}
+
+html[data-ui-theme="ipod"] #screen-home .player-chrome {
+  width: min(332px, calc(100% - 32px));
+  margin: 10px auto 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+html[data-ui-theme="ipod"] .track-title {
+  font-size: 18px;
+  color: var(--text);
+}
+
+html[data-ui-theme="ipod"] .track-artist {
+  color: var(--text-muted);
+}
+
+html[data-ui-theme="ipod"] .progress-row {
+  min-height: 34px;
+  margin-bottom: 12px;
+  padding: 0 10px;
+  border: 1px solid rgba(78, 84, 92, 0.16);
+  border-radius: 999px;
+  background: rgba(247, 247, 244, 0.72);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+html[data-ui-theme="ipod"] .progress-bar {
+  background: rgba(98, 105, 114, 0.22);
+}
+
+html[data-ui-theme="ipod"] .progress-bar span#musicFill {
+  background: #65717d;
+}
+
+html[data-ui-theme="ipod"] .controls-row {
+  --wheel-size: min(228px, 63vw);
+  position: relative;
+  width: var(--wheel-size);
+  height: var(--wheel-size);
+  margin: 12px auto 2px;
+  gap: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, #f7f7f4 0 29%, transparent 30%),
+    radial-gradient(circle at 42% 34%, rgba(255, 255, 255, 0.92), transparent 32%),
+    linear-gradient(145deg, #ecece8, #cfd1d4);
+  box-shadow:
+    inset 0 2px 6px rgba(255, 255, 255, 0.85),
+    inset 0 -10px 22px rgba(83, 87, 93, 0.16),
+    0 12px 34px rgba(66, 63, 56, 0.2);
+}
+
+html[data-ui-theme="ipod"] .controls-row::after {
+  content: "";
+  position: absolute;
+  inset: 32.5%;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #f9f9f7, #d9dbdd);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -6px 12px rgba(85, 90, 98, 0.12);
+  pointer-events: none;
+}
+
+html[data-ui-theme="ipod"] .ctrl-btn {
+  position: absolute;
+  z-index: 1;
+  width: 26%;
+  height: 26%;
+  border-radius: 50%;
+  color: #68727d;
+  background: transparent;
+}
+
+html[data-ui-theme="ipod"] .ctrl-play {
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  width: 34%;
+  height: 34%;
+  color: #4c5662;
+  background: transparent;
+  transform: translate(-50%, -50%);
+}
+
+html[data-ui-theme="ipod"] #btnShuffle {
+  top: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+html[data-ui-theme="ipod"] #btnPrev {
+  left: 6%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+html[data-ui-theme="ipod"] #btnNext {
+  right: 6%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+html[data-ui-theme="ipod"] #btnRepeat {
+  bottom: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+html[data-ui-theme="ipod"] .ctrl-play:active {
+  transform: translate(-50%, -50%) scale(0.94);
+}
+
+html[data-ui-theme="ipod"] #btnShuffle:active,
+html[data-ui-theme="ipod"] #btnRepeat:active {
+  transform: translateX(-50%) scale(0.94);
+}
+
+html[data-ui-theme="ipod"] #btnPrev:active,
+html[data-ui-theme="ipod"] #btnNext:active {
+  transform: translateY(-50%) scale(0.94);
+}
+
+html[data-ui-theme="ipod"] .ctrl-btn.active {
+  color: #252d36;
+}
+
+html[data-ui-theme="ipod"] .home-queue {
+  width: min(360px, calc(100% - 24px));
+  margin: 18px auto 0;
+  border-top-color: rgba(73, 79, 87, 0.18);
+}
+
+html[data-ui-theme="ipod"] .track-thumb,
+html[data-ui-theme="ipod"] .home-queue-thumb,
+html[data-ui-theme="ipod"] .mini-art,
+html[data-ui-theme="ipod"] .search-thumb {
+  border-radius: 6px;
+}
+
+/* iPod polish: stronger shell, joined screen, cleaner click wheel */
+html[data-ui-theme="ipod"] {
+  --bg: #ded8cc;
+  --surface: #f4f2ec;
+  --surface2: #e3dfd5;
+  --text: #151d26;
+  --text-muted: #69737f;
+  --accent: #5d6671;
+  --accent-soft: #4c5661;
+  --border: rgba(45, 50, 58, 0.18);
+}
+
+html[data-ui-theme="ipod"] .app {
+  background:
+    radial-gradient(circle at 50% 7%, rgba(255, 255, 255, 0.94), transparent 28%),
+    radial-gradient(circle at 50% 64%, rgba(255, 255, 255, 0.38), transparent 34%),
+    linear-gradient(180deg, #fbf9f3 0%, #ebe6dc 47%, #c7beb1 100%);
+}
+
+html[data-ui-theme="ipod"] .app-header {
+  background: rgba(251, 249, 243, 0.72);
+  border-bottom-color: rgba(63, 68, 76, 0.12);
+}
+
+html[data-ui-theme="ipod"] .app-logo {
+  letter-spacing: 0;
+  color: #28313b;
+}
+
+html[data-ui-theme="ipod"] #screen-home {
+  padding-top: 12px;
+}
+
+html[data-ui-theme="ipod"] #screen-home .mode-segment {
+  width: min(344px, calc(100% - 32px));
+  margin: 0 auto 12px;
+  background: rgba(199, 202, 206, 0.78);
+}
+
+html[data-ui-theme="ipod"] .home-music.is-active {
+  width: min(344px, calc(100% - 32px));
+  min-height: 210px;
+  margin: 0 auto;
+  padding: 16px 16px 10px;
+  border-color: rgba(7, 12, 18, 0.62);
+  border-bottom: none;
+  border-radius: 22px 22px 0 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent 23%),
+    radial-gradient(circle at 50% 18%, rgba(80, 100, 120, 0.28), transparent 38%),
+    #0c121a;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.055),
+    inset 0 -18px 24px rgba(0, 0, 0, 0.22),
+    0 14px 32px rgba(69, 64, 55, 0.28);
+}
+
+html[data-ui-theme="ipod"] .home-video.is-active {
+  width: min(344px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 0;
+}
+
+html[data-ui-theme="ipod"] .home-video.is-active .video-stage {
+  border-radius: 22px 22px 0 0;
+  border-bottom: none;
+  box-shadow: 0 14px 32px rgba(69, 64, 55, 0.28);
+}
+
+html[data-ui-theme="ipod"] .album-art {
+  width: min(150px, 43vw);
+  margin-bottom: 0;
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 10px 22px rgba(0, 0, 0, 0.44);
+}
+
+html[data-ui-theme="ipod"] #screen-home .player-chrome {
+  width: min(344px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 0;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-music.is-active) .track-title,
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .track-title {
+  margin: 0;
+  padding: 10px 16px 3px;
+  border-left: 1px solid rgba(7, 12, 18, 0.62);
+  border-right: 1px solid rgba(7, 12, 18, 0.62);
+  background: #0c121a;
+  color: #f3f6f8;
+  font-size: 17px;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-music.is-active) .track-artist,
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .track-artist {
+  margin: 0;
+  padding: 0 16px 9px;
+  border-left: 1px solid rgba(7, 12, 18, 0.62);
+  border-right: 1px solid rgba(7, 12, 18, 0.62);
+  background: #0c121a;
+  color: #a7b2bd;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-music.is-active) .progress-row,
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .progress-row {
+  min-height: 44px;
+  margin: 0 0 18px;
+  padding: 0 16px 14px;
+  border: 1px solid rgba(7, 12, 18, 0.62);
+  border-top: none;
+  border-radius: 0 0 22px 22px;
+  background: #0c121a;
+  color: #d8dee5;
+  box-shadow:
+    inset 0 -14px 22px rgba(0, 0, 0, 0.16),
+    0 14px 32px rgba(69, 64, 55, 0.28);
+}
+
+html[data-ui-theme="ipod"] .progress-bar {
+  height: 4px;
+  background: rgba(226, 232, 238, 0.22);
+}
+
+html[data-ui-theme="ipod"] .progress-bar span#musicFill {
+  background: linear-gradient(90deg, #dbe5ee, #8ea0b2);
+}
+
+html[data-ui-theme="ipod"] .controls-row {
+  --wheel-size: min(242px, 66vw);
+  margin-top: 0;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0 29%, rgba(255, 255, 255, 0.42) 30% 31%, transparent 32%),
+    radial-gradient(circle at 38% 30%, rgba(255, 255, 255, 0.96), transparent 33%),
+    radial-gradient(circle at 56% 74%, rgba(143, 145, 148, 0.23), transparent 36%),
+    linear-gradient(145deg, #f8f8f5, #d4d5d6 58%, #babdc1);
+  box-shadow:
+    inset 0 3px 7px rgba(255, 255, 255, 0.95),
+    inset 0 -13px 24px rgba(71, 76, 84, 0.18),
+    0 16px 34px rgba(64, 59, 50, 0.24);
+}
+
+html[data-ui-theme="ipod"] .controls-row::before {
+  content: "";
+  position: absolute;
+  inset: 5%;
+  border-radius: 50%;
+  border: 1px solid rgba(88, 93, 101, 0.12);
+  pointer-events: none;
+}
+
+html[data-ui-theme="ipod"] .controls-row::after {
+  inset: 31%;
+  background:
+    radial-gradient(circle at 40% 32%, rgba(255, 255, 255, 0.96), transparent 36%),
+    linear-gradient(145deg, #fdfcf8, #d7d9dc 70%);
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 255, 0.9),
+    inset 0 -8px 13px rgba(83, 89, 98, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+html[data-ui-theme="ipod"] .ctrl-btn {
+  color: #59636f;
+  opacity: 0.92;
+}
+
+html[data-ui-theme="ipod"] .ctrl-play {
+  color: #313b46;
+  background: transparent;
+}
+
+html[data-ui-theme="ipod"] .ctrl-play .icon {
+  width: 24px;
+  height: 24px;
+}
+
+html[data-ui-theme="ipod"] .ctrl-btn.active {
+  color: #111923;
+  opacity: 1;
+}
+
+html[data-ui-theme="ipod"] .home-queue {
+  margin-top: 14px;
+  padding-top: 4px;
+}
+
+html[data-ui-theme="ipod"] .bottom-nav {
+  background: rgba(245, 243, 237, 0.92);
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.58);
+}
+
+html[data-ui-theme="ipod"] .nav-btn.active {
+  color: #111923;
+}
+
+/* iPod Classic reference pass: compact LCD above a dedicated click wheel */
+html[data-ui-theme="ipod"] #screen-home {
+  padding-top: 10px;
+}
+
+html[data-ui-theme="ipod"] #screen-home .mode-segment {
+  width: min(330px, calc(100% - 28px));
+  margin: 0 auto 10px;
+}
+
+html[data-ui-theme="ipod"] .ipod-device {
+  display: block;
+  width: min(356px, calc(100% - 28px));
+  margin: 0 auto 10px;
+  padding: 18px 18px 22px;
+  border-radius: 34px 34px 46px 46px;
+  background:
+    radial-gradient(circle at 50% 3%, rgba(255, 255, 255, 0.95), transparent 26%),
+    linear-gradient(165deg, #fcfaf5 0%, #ece7dc 45%, #c9c0b3 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -18px 34px rgba(78, 70, 60, 0.2),
+    0 18px 48px rgba(44, 39, 32, 0.28);
+}
+
+html[data-ui-theme="ipod"] .ipod-device .home-panels {
+  display: block;
+  width: 100%;
+  height: min(145px, 34vh);
+  min-height: 118px;
+  overflow: hidden;
+  padding: 8px 10px 0;
+  border: 6px solid #161b21;
+  border-bottom: none;
+  border-radius: 14px 14px 0 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 36%),
+    #161b21;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 10px 22px rgba(56, 52, 45, 0.22);
+}
+
+html[data-ui-theme="ipod"] .ipod-device .home-music.is-active {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 8px;
+  border: none;
+  border-radius: 7px 7px 0 0;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #eef2f5 100%);
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+html[data-ui-theme="ipod"] .ipod-device .home-video.is-active {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+html[data-ui-theme="ipod"] .ipod-device .home-video.is-active .video-stage {
+  height: 100%;
+  border: none;
+  border-radius: 7px 7px 0 0;
+  box-shadow: none;
+}
+
+html[data-ui-theme="ipod"] .ipod-device .album-art {
+  width: min(98px, 30vw);
+  max-width: 112px;
+  margin: 0;
+  border-radius: 5px;
+  box-shadow:
+    0 0 0 1px rgba(22, 27, 33, 0.16),
+    0 7px 16px rgba(25, 32, 40, 0.24);
+}
+
+html[data-ui-theme="ipod"] .ipod-device .player-chrome {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+html[data-ui-theme="ipod"] .ipod-device .player-display-info {
+  display: block;
+  min-height: 86px;
+  padding: 8px 12px 10px;
+  border: 6px solid #161b21;
+  border-top: none;
+  border-radius: 0 0 14px 14px;
+  background:
+    linear-gradient(180deg, #f6f8fa 0%, #e9edf1 100%);
+  box-shadow: 0 10px 22px rgba(56, 52, 45, 0.22);
+}
+
+html[data-ui-theme="ipod"] .ipod-device .track-title {
+  margin: 0 0 3px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #161b21;
+  font-size: 15px;
+  line-height: 1.25;
+  text-shadow: none;
+}
+
+html[data-ui-theme="ipod"] .ipod-device .track-artist {
+  margin: 0 0 8px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #5b6570;
+  font-size: 12px;
+}
+
+html[data-ui-theme="ipod"] .ipod-device .progress-row {
+  min-height: 25px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: #65707b;
+  box-shadow: none;
+}
+
+html[data-ui-theme="ipod"] .ipod-device .progress-bar {
+  height: 5px;
+  background: #c9d0d8;
+}
+
+html[data-ui-theme="ipod"] .ipod-device .progress-bar span#musicFill {
+  background: linear-gradient(90deg, #5f7691, #9eb0c1);
+}
+
+html[data-ui-theme="ipod"] .ipod-device .controls-row {
+  --wheel-size: min(218px, 58vw);
+  position: relative;
+  width: var(--wheel-size);
+  height: var(--wheel-size);
+  margin: 18px auto 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0 29%, rgba(255, 255, 255, 0.42) 30% 31%, transparent 32%),
+    radial-gradient(circle at 35% 27%, rgba(255, 255, 255, 0.95), transparent 34%),
+    linear-gradient(145deg, #f7f7f5, #d3d5d8 62%, #b7bbc0);
+  box-shadow:
+    inset 0 3px 7px rgba(255, 255, 255, 0.95),
+    inset 0 -14px 24px rgba(70, 76, 84, 0.18),
+    0 12px 28px rgba(57, 52, 44, 0.18);
+}
+
+html[data-ui-theme="ipod"] .ipod-device .controls-row::before {
+  content: "";
+  position: absolute;
+  inset: 5%;
+  border-radius: 50%;
+  border: 1px solid rgba(75, 82, 91, 0.14);
+  pointer-events: none;
+}
+
+html[data-ui-theme="ipod"] .ipod-device .controls-row::after {
+  content: "";
+  position: absolute;
+  inset: 31.5%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 30%, rgba(255, 255, 255, 0.96), transparent 38%),
+    linear-gradient(145deg, #fffefa, #d8dbde 72%);
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 255, 0.9),
+    inset 0 -8px 13px rgba(83, 89, 98, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+
+html[data-ui-theme="ipod"] .ipod-device .ctrl-btn {
+  position: absolute;
+  z-index: 1;
+  width: 25%;
+  height: 25%;
+  border-radius: 50%;
+  color: #5d6773;
+  background: transparent;
+  opacity: 0.96;
+}
+
+html[data-ui-theme="ipod"] .ipod-device .ctrl-play {
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  width: 34%;
+  height: 34%;
+  color: #303a45;
+  background: transparent;
+  transform: translate(-50%, -50%);
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnShuffle {
+  top: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnPrev {
+  left: 6%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnNext {
+  right: 6%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnRepeat {
+  bottom: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+html[data-ui-theme="ipod"] .ipod-device .ctrl-play:active {
+  transform: translate(-50%, -50%) scale(0.94);
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnShuffle:active,
+html[data-ui-theme="ipod"] .ipod-device #btnRepeat:active {
+  transform: translateX(-50%) scale(0.94);
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnPrev:active,
+html[data-ui-theme="ipod"] .ipod-device #btnNext:active {
+  transform: translateY(-50%) scale(0.94);
+}
+
+/* fix99: one-piece LCD and cleaner reference-style wheel */
+html[data-ui-theme="ipod"] .ipod-device {
+  width: min(332px, calc(100% - 30px));
+  padding: 17px 17px 26px;
+  border-radius: 32px 32px 42px 42px;
+  background:
+    radial-gradient(circle at 44% 4%, rgba(255, 255, 255, 0.95), transparent 30%),
+    linear-gradient(155deg, #ffffff 0%, #f0eee8 42%, #d6d0c6 72%, #bdb5a8 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -18px 34px rgba(70, 63, 54, 0.18),
+    0 18px 48px rgba(38, 35, 29, 0.24);
+}
+
+html[data-ui-theme="ipod"] .ipod-screen {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(82px, 34%) minmax(0, 1fr);
+  grid-template-rows: 20px minmax(78px, 1fr);
+  column-gap: 9px;
+  width: 100%;
+  min-height: 150px;
+  padding: 24px 10px 9px;
+  border: 4px solid #20252b;
+  border-radius: 9px;
+  background:
+    linear-gradient(180deg, #dce8fb 0 20px, transparent 20px),
+    linear-gradient(90deg, rgba(109, 131, 174, 0.2), transparent 48%),
+    linear-gradient(180deg, #f8fbff 0%, #e3edf9 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.88),
+    inset 0 -1px 0 rgba(48, 66, 92, 0.18),
+    0 8px 18px rgba(48, 42, 34, 0.18);
+  overflow: hidden;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen::before {
+  content: "iPod";
+  position: absolute;
+  top: 3px;
+  left: 0;
+  right: 0;
+  height: 18px;
+  color: #1d2631;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  box-shadow: inset 0 -1px 0 rgba(45, 62, 96, 0.28);
+  pointer-events: none;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  width: 24px;
+  height: 11px;
+  border: 2px solid #1e2835;
+  border-radius: 2px;
+  background:
+    linear-gradient(90deg, #97b45d 0 70%, transparent 70%),
+    rgba(255, 255, 255, 0.45);
+  box-shadow: 3px 3px 0 -2px #1e2835;
+  pointer-events: none;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen .home-panels {
+  grid-column: 1;
+  grid-row: 2;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  align-self: start;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen .home-music.is-active {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  background: transparent;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen .album-art {
+  width: 100%;
+  max-width: 96px;
+  aspect-ratio: 1;
+  border-radius: 2px;
+  box-shadow:
+    0 0 0 1px rgba(34, 46, 64, 0.22),
+    0 4px 9px rgba(31, 44, 60, 0.18);
+}
+
+html[data-ui-theme="ipod"] .ipod-screen .home-video.is-active,
+html[data-ui-theme="ipod"] .ipod-screen .home-video.is-active .video-stage {
+  width: 100%;
+  height: 96px;
+  border: none;
+  border-radius: 2px;
+  box-shadow: none;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen .player-display-info {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen .track-title {
+  margin: 1px 0 4px;
+  color: #1a2532;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: left;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen .track-artist {
+  margin: 0 0 4px;
+  color: #2f3945;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: left;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen .progress-row {
+  margin-top: auto;
+  color: #1d2834;
+  font-size: 12px;
+  gap: 6px;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen .progress-bar-hit {
+  min-height: 20px;
+  padding: 8px 0;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen .progress-bar {
+  height: 7px;
+  border: 1px solid #8c9bb1;
+  border-radius: 0;
+  background: #d8e1ed;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen .progress-bar span#musicFill {
+  border-radius: 0;
+  background: #4d7ed6;
+}
+
+html[data-ui-theme="ipod"] .ipod-device .player-chrome {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+html[data-ui-theme="ipod"] .ipod-device .controls-row {
+  --wheel-size: min(214px, 58vw);
+  margin: 25px auto 0;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0 29%, rgba(255, 255, 255, 0.34) 30% 31%, transparent 32%),
+    radial-gradient(circle at 38% 28%, rgba(255, 255, 255, 0.94), transparent 34%),
+    linear-gradient(145deg, #eeeeec, #d3d3d1 62%, #c3c4c3);
+  box-shadow:
+    inset 0 3px 7px rgba(255, 255, 255, 0.84),
+    inset 0 -12px 22px rgba(95, 99, 104, 0.13),
+    0 8px 18px rgba(68, 62, 52, 0.12);
+}
+
+html[data-ui-theme="ipod"] .ipod-device .controls-row::after {
+  inset: 32%;
+  background:
+    radial-gradient(circle at 38% 30%, rgba(255, 255, 255, 0.95), transparent 38%),
+    linear-gradient(145deg, #f8f8f5, #dedfdd 72%);
+}
+
+html[data-ui-theme="ipod"] .ipod-device .ctrl-btn svg {
+  display: none !important;
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnRepeat .icon-repeat-all,
+html[data-ui-theme="ipod"] .ipod-device #btnRepeat .icon-repeat-one,
+html[data-ui-theme="ipod"] .ipod-device #btnRepeat.repeat-one .icon-repeat-all,
+html[data-ui-theme="ipod"] .ipod-device #btnRepeat.repeat-one .icon-repeat-one {
+  display: none !important;
+}
+
+html[data-ui-theme="ipod"] .ipod-device .ctrl-btn::before {
+  color: rgba(117, 123, 128, 0.8);
+  font-weight: 700;
+  line-height: 1;
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnShuffle::before {
+  content: "";
+  display: block;
+  width: 23px;
+  height: 23px;
+  background: rgba(117, 123, 128, 0.82);
+  transition: background 120ms ease, opacity 120ms ease;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 4h5v5'/%3E%3Cpath d='M4 18h2c3 0 4.6-2 6-5.5C13.6 8.8 15.2 6 19 6h2'/%3E%3Cpath d='M16 20h5v-5'/%3E%3Cpath d='M4 6h2c2.4 0 3.9 1.2 5.3 3.5'/%3E%3Cpath d='M14 15c1.3 1.9 2.8 3 5 3h2'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 4h5v5'/%3E%3Cpath d='M4 18h2c3 0 4.6-2 6-5.5C13.6 8.8 15.2 6 19 6h2'/%3E%3Cpath d='M16 20h5v-5'/%3E%3Cpath d='M4 6h2c2.4 0 3.9 1.2 5.3 3.5'/%3E%3Cpath d='M14 15c1.3 1.9 2.8 3 5 3h2'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnShuffle.active {
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnShuffle:active::before,
+html[data-ui-theme="ipod"] .ipod-device #btnShuffle.active::before {
+  background: rgba(47, 54, 62, 0.9);
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnShuffle.active::after {
+  content: none;
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnPrev::before {
+  content: "◀◀";
+  font-size: 17px;
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnNext::before {
+  content: "▶▶";
+  font-size: 17px;
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnRepeat::before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: rgba(117, 123, 128, 0.82);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnRepeat.active,
+html[data-ui-theme="ipod"] .ipod-device #btnRepeat.repeat-one {
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnRepeat:active::before,
+html[data-ui-theme="ipod"] .ipod-device #btnRepeat.active::before,
+html[data-ui-theme="ipod"] .ipod-device #btnRepeat.repeat-one::before {
+  background: #172231;
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnRepeat.repeat-one::before {
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4zm-4-2V9h-1.5l-2 1.5.9 1.2 1.1-.8V15H13z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4zm-4-2V9h-1.5l-2 1.5.9 1.2 1.1-.8V15H13z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+html[data-ui-theme="ipod"] .ipod-device #btnRepeat.active::after,
+html[data-ui-theme="ipod"] .ipod-device #btnRepeat.repeat-one::after {
+  content: none;
+}
+
+html[data-ui-theme="ipod"] .ipod-device .ctrl-play::before {
+  content: "";
+}
+
+html[data-ui-theme="ipod"] #screen-settings .screen-title {
+  width: min(344px, calc(100% - 8px));
+  margin: 0 auto;
+  padding: 4px 10px;
+  border: 3px solid #20252b;
+  border-bottom: none;
+  border-radius: 9px 9px 0 0;
+  background: linear-gradient(180deg, #edf4ff, #d4e1f3);
+  color: #172231;
+  font-size: 15px;
+  line-height: 20px;
+  text-align: center;
+  box-shadow: inset 0 -1px 0 rgba(45, 62, 96, 0.28);
+}
+
+html[data-ui-theme="ipod"] #screen-settings .settings-card {
+  width: min(344px, calc(100% - 8px));
+  margin: 0 auto;
+  padding: 8px 10px;
+  border: 3px solid #20252b;
+  border-top: none;
+  border-bottom-width: 1px;
+  border-radius: 0;
+  background: linear-gradient(180deg, #f8fbff, #e7effa);
+  color: #172231;
+  box-shadow: none;
+}
+
+html[data-ui-theme="ipod"] #screen-settings .settings-card:nth-of-type(5) {
+  background: #273f87;
+  color: #fff;
+}
+
+html[data-ui-theme="ipod"] #screen-settings .settings-card:nth-of-type(5) .field-label,
+html[data-ui-theme="ipod"] #screen-settings .settings-card:nth-of-type(5) .settings-label,
+html[data-ui-theme="ipod"] #screen-settings .settings-card:nth-of-type(5) .settings-value {
+  color: #fff;
+}
+
+html[data-ui-theme="ipod"] #screen-settings .settings-card:last-of-type {
+  border-bottom-width: 3px;
+  border-radius: 0 0 9px 9px;
+}
+
+html[data-ui-theme="ipod"] #screen-settings .field-select,
+html[data-ui-theme="ipod"] #screen-settings .field-input,
+html[data-ui-theme="ipod"] #screen-settings .field-textarea {
+  min-height: 34px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #172231;
+}
+
+html[data-ui-theme="ipod"] #screen-settings .settings-withdraw-link {
+  display: block;
+  width: min(344px, calc(100% - 8px));
+  margin: 10px auto 0;
+  text-align: center;
+}
+
+/* fix103: clean iPod settings cards */
+html[data-ui-theme="ipod"] #screen-settings .screen-title {
+  width: auto;
+  margin: 0 0 16px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #172231;
+  font-size: 20px;
+  line-height: 1.2;
+  text-align: left;
+  box-shadow: none;
+}
+
+html[data-ui-theme="ipod"] #screen-settings .settings-card,
+html[data-ui-theme="ipod"] #screen-settings .settings-card:nth-of-type(5),
+html[data-ui-theme="ipod"] #screen-settings .settings-card:last-of-type {
+  width: auto;
+  margin: 0 0 12px;
+  padding: 16px;
+  border: 1px solid rgba(86, 92, 100, 0.16);
+  border-radius: 12px;
+  background: rgba(248, 247, 243, 0.9);
+  color: #172231;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+html[data-ui-theme="ipod"] #screen-settings .settings-card:nth-of-type(5) .field-label,
+html[data-ui-theme="ipod"] #screen-settings .settings-card:nth-of-type(5) .settings-label,
+html[data-ui-theme="ipod"] #screen-settings .settings-card:nth-of-type(5) .settings-value {
+  color: var(--text-muted);
+}
+
+html[data-ui-theme="ipod"] #screen-settings .settings-card:nth-of-type(5) .field-select {
+  color: #172231;
+}
+
+/* fix100: remove fake battery and keep LCD content unboxed */
+html[data-ui-theme="ipod"] .ipod-screen::after {
+  content: none;
+  display: none;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen {
+  grid-template-columns: minmax(84px, 34%) minmax(0, 1fr);
+  column-gap: 12px;
+  padding-right: 12px;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen .player-display-info,
+html[data-ui-theme="ipod"] .ipod-screen .track-title,
+html[data-ui-theme="ipod"] .ipod-screen .track-artist,
+html[data-ui-theme="ipod"] .ipod-screen .progress-row {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen .track-title {
+  padding: 0;
+  margin: 0 0 3px;
+  color: #152233;
+  text-shadow: none;
+  max-width: 100%;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen .track-artist {
+  padding: 0;
+  color: #2f3d4d;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen .progress-row {
+  padding: 0;
+  min-height: 24px;
+  color: #1f2f43;
+}
+
+html[data-ui-theme="ipod"] .ipod-screen .progress-bar {
+  border-color: #94a3b8;
+  background: #dce5f0;
+}
+
+/* fix101: override old black screen rules inside the LCD */
+html[data-ui-theme="ipod"] #screen-home:has(.home-music.is-active) .ipod-screen .player-display-info,
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .player-display-info,
+html[data-ui-theme="ipod"] #screen-home:has(.home-music.is-active) .ipod-screen .track-title,
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .track-title,
+html[data-ui-theme="ipod"] #screen-home:has(.home-music.is-active) .ipod-screen .track-artist,
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .track-artist,
+html[data-ui-theme="ipod"] #screen-home:has(.home-music.is-active) .ipod-screen .progress-row,
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .progress-row {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-music.is-active) .ipod-screen .track-title,
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .track-title {
+  margin: 0 0 3px;
+  padding: 0;
+  color: #152233;
+  font-size: 15px;
+  line-height: 1.25;
+  text-shadow: none;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-music.is-active) .ipod-screen .track-artist,
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .track-artist {
+  margin: 0 0 4px;
+  padding: 0;
+  color: #2f3d4d;
+  font-size: 13px;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-music.is-active) .ipod-screen .progress-row,
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .progress-row {
+  min-height: 24px;
+  margin: auto 0 0;
+  padding: 0;
+  color: #1f2f43;
+}
+
+/* fix102: remove boxed segment controls from non-home iPod screens */
+html[data-ui-theme="ipod"] #screen-library .library-segment,
+html[data-ui-theme="ipod"] #screen-add .add-segment,
+html[data-ui-theme="ipod"] #screen-add .search-type-segment {
+  display: flex;
+  gap: 18px;
+  margin: 0 0 14px;
+  padding: 0 2px 8px;
+  border: 0;
+  border-bottom: 1px solid rgba(31, 43, 58, 0.16);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-ui-theme="ipod"] #screen-library .library-segment-btn,
+html[data-ui-theme="ipod"] #screen-add .add-segment-btn,
+html[data-ui-theme="ipod"] #screen-add .search-type-btn {
+  flex: 0 0 auto;
+  min-height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #6b7480;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: none;
+}
+
+html[data-ui-theme="ipod"] #screen-library .library-segment-btn.active,
+html[data-ui-theme="ipod"] #screen-add .add-segment-btn.active,
+html[data-ui-theme="ipod"] #screen-add .search-type-btn.active {
+  position: relative;
+  background: transparent;
+  color: #172231;
+  box-shadow: none;
+}
+
+html[data-ui-theme="ipod"] #screen-library .library-segment-btn.active::after,
+html[data-ui-theme="ipod"] #screen-add .add-segment-btn.active::after,
+html[data-ui-theme="ipod"] #screen-add .search-type-btn.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;
+  height: 2px;
+  border-radius: 999px;
+  background: #273f87;
+}
+
+/* fix107: larger video tab and neutral quality selector */
+html:not([data-ui-theme="ipod"]) #screen-home:has(.home-video.is-active) .home-video.is-active {
+  margin-left: calc(-1 * var(--page-x));
+  margin-right: calc(-1 * var(--page-x));
+  padding: 0;
+}
+
+html:not([data-ui-theme="ipod"]) #screen-home:has(.home-video.is-active) .video-stage {
+  border-radius: 0 0 18px 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 28%),
+    #050505;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06),
+    0 18px 38px rgba(0, 0, 0, 0.34);
+}
+
+.video-stage.video-fullscreen-ready {
+  cursor: zoom-in;
+}
+
+.video-stage:fullscreen,
+.video-stage:-webkit-full-screen {
+  cursor: default;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-device {
+  width: min(430px, calc(100% - 20px));
+  padding: 14px 14px 20px;
+  border-radius: 30px 30px 40px 40px;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen {
+  grid-template-columns: 1fr;
+  grid-template-rows: 20px minmax(164px, 1fr);
+  min-height: clamp(210px, 43vh, 278px);
+  padding: 24px 10px 10px;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .home-panels {
+  grid-column: 1;
+  grid-row: 2;
+  width: 100%;
+  height: 100%;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .home-video.is-active,
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .home-video.is-active .video-stage {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-radius: 3px;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .player-display-info {
+  display: none;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-device .controls-row {
+  --wheel-size: min(188px, 49vw);
+  margin-top: 18px;
+}
+
+/* fix112: keep iPod video tab the same device size as music tab */
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-device {
+  width: min(390px, calc(100% - 24px));
+  padding: 16px 16px 24px;
+  border-radius: 32px 32px 44px 44px;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen {
+  grid-template-columns: minmax(82px, 34%) minmax(0, 1fr);
+  grid-template-rows: 20px minmax(78px, 1fr);
+  min-height: clamp(250px, 29vh, 260px);
+  padding: 24px 8px 8px;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .home-panels {
+  grid-column: 1;
+  grid-row: 2;
+  width: 100%;
+  height: auto;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .home-video.is-active,
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .home-video.is-active .video-stage {
+  width: 100%;
+  height: 96px;
+  min-height: 0;
+  border-radius: 2px;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .player-display-info {
+  display: flex;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-device .controls-row {
+  --wheel-size: min(218px, 58vw);
+  margin-top: 20px;
+}
+
+/* fix113: iPod video tab fills the LCD without track text */
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen {
+  grid-template-columns: 1fr;
+  grid-template-rows: 20px minmax(0, 1fr);
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .home-panels {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: stretch;
+  width: 100%;
+  height: 100%;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .home-video.is-active,
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .home-video.is-active .video-stage {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+  border-radius: 4px;
+}
+
+html[data-ui-theme="ipod"] #screen-home:has(.home-video.is-active) .ipod-screen .player-display-info {
+  display: none;
+}
+
+html[data-ui-theme="ipod"] .quality-segment-btn {
+  background: rgba(210, 213, 217, 0.78);
+  color: #5f6873;
+  border-color: rgba(93, 99, 106, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.62);
+}
+
+html[data-ui-theme="ipod"] .quality-segment-btn.active {
+  background: rgba(188, 194, 200, 0.92);
+  color: #172231;
+  border-color: rgba(93, 99, 106, 0.34);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.74),
+    0 5px 12px rgba(80, 78, 70, 0.12);
+}
+
+/* Legacy Game Boy CSS retained for rollback; fix120 uses styles-gameboy.css. */
+html[data-ui-theme="gameboy-legacy-disabled"] {
+  --bg: #c6c4b7;
+  --surface: #d8d5c7;
+  --surface2: #bdb9aa;
+  --text: #161823;
+  --text-muted: #4d5260;
+  --accent: #8b1857;
+  --accent-soft: #6f1548;
+  --border: #777467;
+  --player-video-gap: 12px;
+  font-family: "Courier New", "Lucida Console", monospace;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"],
+html[data-ui-theme="gameboy-legacy-disabled"] body {
+  background:
+    radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.32), transparent 28%),
+    linear-gradient(180deg, #b9bdc1, #92979d);
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] * {
+  image-rendering: pixelated;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .app {
+  background: #d7d3c3;
+  color: #161823;
+  box-shadow:
+    inset 0 0 0 4px rgba(255, 255, 255, 0.24),
+    inset 0 -8px 0 rgba(111, 108, 96, 0.18),
+    0 0 0 4px #74746e;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .app-header,
+html[data-ui-theme="gameboy-legacy-disabled"] .bottom-nav,
+html[data-ui-theme="gameboy-legacy-disabled"] .mini-player {
+  background: #cbc8b8;
+  border-color: #8e8a7b;
+  color: #161823;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .screen {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.18), transparent 18%, transparent 82%, rgba(67, 64, 55, 0.12)),
+    #d7d3c3;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .mode-segment,
+html[data-ui-theme="gameboy-legacy-disabled"] .library-segment,
+html[data-ui-theme="gameboy-legacy-disabled"] .add-segment,
+html[data-ui-theme="gameboy-legacy-disabled"] .search-type-segment {
+  border: 3px solid #777467;
+  border-radius: 0;
+  background: #bcb8a8;
+  box-shadow: inset -3px -3px 0 rgba(72, 69, 61, 0.18);
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .mode-segment-btn,
+html[data-ui-theme="gameboy-legacy-disabled"] .library-segment-btn,
+html[data-ui-theme="gameboy-legacy-disabled"] .add-segment-btn,
+html[data-ui-theme="gameboy-legacy-disabled"] .search-type-btn {
+  border-radius: 0;
+  color: #383b45;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .mode-segment-indicator,
+html[data-ui-theme="gameboy-legacy-disabled"] .library-segment-btn.active,
+html[data-ui-theme="gameboy-legacy-disabled"] .add-segment-btn.active,
+html[data-ui-theme="gameboy-legacy-disabled"] .search-type-btn.active {
+  background: #ede9d8;
+  color: #151722;
+  box-shadow: inset -3px -3px 0 rgba(100, 96, 84, 0.18);
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #screen-home {
+  padding-top: 10px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #screen-home .mode-segment {
+  width: min(360px, calc(100% - 24px));
+  margin: 0 auto 12px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-device {
+  position: relative;
+  display: block;
+  width: min(390px, calc(100% - 16px));
+  margin: 0 auto 14px;
+  padding: 22px 20px 34px;
+  border: 4px solid #918d80;
+  border-radius: 16px 16px 42px 16px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.4), transparent 22%, transparent 78%, rgba(78, 75, 67, 0.18)),
+    #d8d5c8;
+  box-shadow:
+    inset 4px 4px 0 rgba(255, 255, 255, 0.42),
+    inset -5px -7px 0 rgba(86, 83, 74, 0.18),
+    0 16px 36px rgba(45, 45, 42, 0.28);
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-device::before {
+  content: "Nintendo GAME BOY";
+  position: absolute;
+  left: 28px;
+  top: 288px;
+  color: #1b2b7a;
+  font-family: "Arial Black", "Courier New", monospace;
+  font-size: 18px;
+  font-style: italic;
+  letter-spacing: 0;
+  text-shadow: 2px 0 0 rgba(255, 255, 255, 0.38);
+  pointer-events: none;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-device::after {
+  content: "";
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  width: 110px;
+  height: 64px;
+  background:
+    repeating-linear-gradient(75deg, transparent 0 12px, #7d7a70 12px 17px, transparent 17px 23px);
+  opacity: 0.78;
+  pointer-events: none;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-screen {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(88px, 34%) minmax(0, 1fr);
+  grid-template-rows: minmax(150px, 1fr);
+  column-gap: 12px;
+  width: 100%;
+  min-height: 220px;
+  padding: 48px 28px 30px 66px;
+  border: 4px solid #2c2b36;
+  border-radius: 14px 14px 34px 14px;
+  background:
+    linear-gradient(135deg, #4e4d58 0%, #686772 63%, #4e4d58 100%);
+  box-shadow:
+    inset 4px 4px 0 rgba(255, 255, 255, 0.12),
+    inset -5px -5px 0 rgba(15, 15, 22, 0.3);
+  overflow: hidden;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-screen::before {
+  content: "DOT MATRIX WITH STEREO SOUND";
+  position: absolute;
+  top: 14px;
+  left: 58px;
+  right: 28px;
+  color: #b7b0bb;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: center;
+  border-top: 3px solid #2a246d;
+  border-bottom: 3px solid #8d235a;
+  pointer-events: none;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-screen::after {
+  content: "";
+  position: absolute;
+  left: 50px;
+  top: 92px;
+  width: 10px;
+  height: 10px;
+  border-radius: 0;
+  background: #781c2d;
+  box-shadow: 0 18px 0 -4px #bcb4ba;
+  pointer-events: none;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-screen .home-panels,
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-screen .player-display-info {
+  position: relative;
+  z-index: 1;
+  min-height: 0;
+  border: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(48, 67, 20, 0.16) 0 2px, transparent 2px 5px),
+    repeating-linear-gradient(90deg, rgba(48, 67, 20, 0.14) 0 2px, transparent 2px 5px),
+    #879543;
+  color: #1b250f;
+  box-shadow:
+    inset 0 0 0 3px #20251a,
+    inset 6px 6px 0 rgba(255, 255, 255, 0.08),
+    inset -6px -6px 0 rgba(20, 28, 12, 0.2);
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-screen .home-panels {
+  grid-column: 1;
+  padding: 8px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-screen .player-display-info {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 12px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .home-music.is-active,
+html[data-ui-theme="gameboy-legacy-disabled"] .home-video.is-active {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .album-art {
+  width: 100%;
+  max-width: 112px;
+  margin: 0;
+  border: 3px solid #20251a;
+  border-radius: 0;
+  filter: contrast(1.2) saturate(0.72);
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #screen-home:has(.home-video.is-active) .ipod-screen {
+  grid-template-columns: 1fr;
+  grid-template-rows: minmax(150px, 1fr);
+  min-height: 220px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #screen-home:has(.home-video.is-active) .ipod-screen .home-panels {
+  grid-column: 1;
+  height: 100%;
+  padding: 6px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #screen-home:has(.home-video.is-active) .ipod-screen .player-display-info {
+  display: none;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #screen-home:has(.home-video.is-active) .video-stage {
+  height: 100%;
+  aspect-ratio: auto;
+  border: 3px solid #20251a;
+  border-radius: 0;
+  background: #1d2710;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .track-title {
+  margin: 0 0 8px;
+  color: #18230e;
+  font-size: 15px;
+  line-height: 1.2;
+  text-shadow: 1px 1px 0 rgba(141, 154, 74, 0.72);
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .track-artist {
+  margin: 0 0 12px;
+  color: #2d3b19;
+  font-size: 12px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .progress-row {
+  color: #1f2b12;
+  font-size: 10px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .progress-bar {
+  height: 8px;
+  border: 2px solid #253216;
+  border-radius: 0;
+  background: #667633;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .progress-bar span#musicFill {
+  border-radius: 0;
+  background: #18230e;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-device .player-chrome {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .controls-row {
+  position: relative;
+  display: block;
+  height: 190px;
+  margin-top: 22px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .controls-row::before,
+html[data-ui-theme="gameboy-legacy-disabled"] .controls-row::after {
+  content: "";
+  position: absolute;
+  left: 24px;
+  top: 50px;
+  background: #171821;
+  box-shadow:
+    inset 4px 4px 0 rgba(255, 255, 255, 0.08),
+    inset -4px -4px 0 rgba(0, 0, 0, 0.42),
+    0 4px 0 #06070b;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .controls-row::before {
+  width: 88px;
+  height: 30px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .controls-row::after {
+  left: 53px;
+  top: 21px;
+  width: 30px;
+  height: 88px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ctrl-btn {
+  position: absolute;
+  z-index: 2;
+  border-radius: 0;
+  color: #11131b;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ctrl-btn .icon {
+  width: 22px;
+  height: 22px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #btnPrev,
+html[data-ui-theme="gameboy-legacy-disabled"] #btnNext {
+  top: 43px;
+  width: 38px;
+  height: 44px;
+  color: #d2d2d0;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #btnPrev {
+  left: 20px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #btnNext {
+  left: 78px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ctrl-play {
+  right: 24px;
+  top: 24px;
+  width: 58px;
+  height: 58px;
+  border: 4px solid #5b1237;
+  border-radius: 50%;
+  background: #a61764;
+  color: #f2dceb;
+  box-shadow:
+    inset 4px 4px 0 rgba(255, 255, 255, 0.22),
+    inset -5px -5px 0 rgba(44, 6, 26, 0.35),
+    0 5px 0 #5d1339;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ctrl-play::after {
+  content: "A";
+  position: absolute;
+  right: -16px;
+  bottom: -14px;
+  color: #1b2b7a;
+  font-size: 13px;
+  font-weight: 700;
+  transform: rotate(22deg);
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #btnShuffle,
+html[data-ui-theme="gameboy-legacy-disabled"] #btnRepeat {
+  top: 118px;
+  width: 54px;
+  height: 20px;
+  border: 3px solid #777467;
+  border-radius: 999px;
+  background: #9f9d94;
+  color: #1b2b7a;
+  transform: rotate(-22deg);
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.35),
+    inset -2px -2px 0 rgba(54, 52, 47, 0.24),
+    0 3px 0 #706d64;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #btnShuffle {
+  left: 118px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #btnRepeat {
+  left: 186px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #btnShuffle .icon,
+html[data-ui-theme="gameboy-legacy-disabled"] #btnRepeat .icon {
+  display: none;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #btnShuffle::after,
+html[data-ui-theme="gameboy-legacy-disabled"] #btnRepeat::after {
+  position: absolute;
+  left: 50%;
+  top: 24px;
+  color: #1b2b7a;
+  font-size: 11px;
+  font-weight: 700;
+  transform: translateX(-50%);
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #btnShuffle::after {
+  content: "SELECT";
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #btnRepeat::after {
+  content: "START";
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ctrl-btn:active {
+  transform: translateY(2px);
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #btnShuffle:active,
+html[data-ui-theme="gameboy-legacy-disabled"] #btnRepeat:active {
+  transform: rotate(-22deg) translateY(2px);
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .home-queue {
+  border-top: 3px solid #a29e8f;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .settings-card,
+html[data-ui-theme="gameboy-legacy-disabled"] .playlist-card,
+html[data-ui-theme="gameboy-legacy-disabled"] .url-target-card,
+html[data-ui-theme="gameboy-legacy-disabled"] .url-card,
+html[data-ui-theme="gameboy-legacy-disabled"] .search-result,
+html[data-ui-theme="gameboy-legacy-disabled"] .gate-card,
+html[data-ui-theme="gameboy-legacy-disabled"] .withdraw-card,
+html[data-ui-theme="gameboy-legacy-disabled"] .admin-code-card,
+html[data-ui-theme="gameboy-legacy-disabled"] .admin-feedback-card {
+  border: 3px solid #8b8778;
+  border-radius: 0;
+  background: #d1cdbc;
+  color: #161823;
+  box-shadow: inset -4px -4px 0 rgba(85, 81, 70, 0.14);
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .field-input,
+html[data-ui-theme="gameboy-legacy-disabled"] .field-select,
+html[data-ui-theme="gameboy-legacy-disabled"] .field-textarea,
+html[data-ui-theme="gameboy-legacy-disabled"] .search-input {
+  border: 3px solid #777467;
+  border-radius: 0;
+  background: #eee8d6;
+  color: #161823;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .btn-primary,
+html[data-ui-theme="gameboy-legacy-disabled"] .btn-secondary,
+html[data-ui-theme="gameboy-legacy-disabled"] .search-action-btn {
+  border: 3px solid #777467;
+  border-radius: 0;
+  background: #bcb8a8;
+  color: #161823;
+  box-shadow: inset -3px -3px 0 rgba(72, 69, 61, 0.18);
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .btn-primary,
+html[data-ui-theme="gameboy-legacy-disabled"] .search-action-btn-accent {
+  background: #a61764;
+  color: #fff3fa;
+  border-color: #68143f;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .quality-segment-btn {
+  border: 3px solid #777467;
+  border-radius: 0;
+  background: #bcb8a8;
+  color: #333640;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .quality-segment-btn.active {
+  background: #879543;
+  color: #18230e;
+  border-color: #20251a;
+}
+
+@media (max-width: 380px) {
+  html[data-ui-theme="gameboy-legacy-disabled"] .ipod-device {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  html[data-ui-theme="gameboy-legacy-disabled"] .ipod-device::before {
+    top: 280px;
+    font-size: 16px;
+  }
+
+  html[data-ui-theme="gameboy-legacy-disabled"] #btnShuffle {
+    left: 104px;
+  }
+
+  html[data-ui-theme="gameboy-legacy-disabled"] #btnRepeat {
+    left: 166px;
+  }
+}
+
+/* fix119: make the Game Boy home LCD one pixel screen, not boxed panels */
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-screen {
+  grid-template-columns: minmax(72px, 31%) minmax(0, 1fr);
+  grid-template-rows: minmax(132px, 1fr);
+  column-gap: 14px;
+  min-height: 220px;
+  padding: 56px 34px 32px 72px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-screen::before {
+  z-index: 2;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-screen::after {
+  left: 72px;
+  right: 34px;
+  top: 56px;
+  bottom: 32px;
+  z-index: 0;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(42, 62, 18, 0.17) 0 2px, transparent 2px 5px),
+    repeating-linear-gradient(90deg, rgba(42, 62, 18, 0.15) 0 2px, transparent 2px 5px),
+    #899847;
+  box-shadow:
+    inset 0 0 0 3px #20251a,
+    inset 5px 5px 0 rgba(255, 255, 255, 0.08),
+    inset -5px -5px 0 rgba(20, 28, 12, 0.2);
+  opacity: 1;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-screen .home-panels,
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-screen .player-display-info {
+  z-index: 1;
+  min-width: 0;
+  min-height: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-screen .home-panels {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .ipod-screen .player-display-info {
+  gap: 6px;
+  justify-content: center;
+  padding: 4px 0;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .home-music.is-active,
+html[data-ui-theme="gameboy-legacy-disabled"] .home-video.is-active {
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overflow: hidden;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .album-art {
+  width: min(76px, 100%);
+  max-width: 76px;
+  margin: 0;
+  border: 0;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .track-title {
+  display: -webkit-box;
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  color: #18230e;
+  font-size: 13px;
+  line-height: 1.18;
+  text-align: left;
+  text-overflow: clip;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .track-artist {
+  display: -webkit-box;
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  color: #2d3b19;
+  font-size: 10px;
+  line-height: 1.2;
+  text-align: left;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .progress-row {
+  width: 100%;
+  flex-shrink: 0;
+  gap: 5px;
+  margin: 0;
+  font-size: 9px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .progress-bar-hit {
+  min-height: 16px;
+  padding: 6px 0;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] .progress-bar {
+  height: 6px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #screen-home:has(.home-video.is-active) .ipod-screen {
+  grid-template-columns: 1fr;
+  grid-template-rows: minmax(132px, 1fr);
+  padding: 56px 34px 32px 72px;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #screen-home:has(.home-video.is-active) .ipod-screen .home-panels {
+  grid-column: 1;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+html[data-ui-theme="gameboy-legacy-disabled"] #screen-home:has(.home-video.is-active) .video-stage {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (max-width: 380px) {
+  html[data-ui-theme="gameboy-legacy-disabled"] .ipod-screen {
+    grid-template-columns: minmax(66px, 30%) minmax(0, 1fr);
+    column-gap: 10px;
+    padding: 54px 24px 30px 58px;
+  }
+
+  html[data-ui-theme="gameboy-legacy-disabled"] .ipod-screen::after {
+    left: 58px;
+    right: 24px;
+    top: 54px;
+    bottom: 30px;
+  }
+
+  html[data-ui-theme="gameboy-legacy-disabled"] .album-art {
+    width: min(66px, 100%);
+  }
+
+  html[data-ui-theme="gameboy-legacy-disabled"] .track-title {
+    font-size: 12px;
+  }
+}
+
+/* 홈 화면 추가(standalone) 전용: Safari 주소창 영역 없음 → 화면 맨 아래까지 */
+/* fix120: balanced default home and unframed settings sections */
+.home-queue-preview[hidden] {
+  display: none !important;
+}
+
+.home-queue-preview {
+  padding: 0 var(--page-x) 8px;
+}
+
+.home-queue-preview-item {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  min-height: 60px;
+  margin: 0;
+  padding: 8px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.home-queue-preview-item:last-child {
+  border-bottom: 0;
+}
+
+.home-queue-preview-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 4px;
+  background: var(--surface) center / cover no-repeat;
+}
+
+.home-queue-preview-meta {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.home-queue-preview-title,
+.home-queue-preview-artist {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-queue-preview-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.home-queue-preview-artist {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+html[data-ui-theme="default"] #screen-home {
+  display: flex;
+  flex-direction: column;
+  padding-top: 16px;
+}
+
+html[data-ui-theme="default"] #screen-home .mode-segment {
+  flex: 0 0 auto;
+  margin-bottom: 14px;
+}
+
+html[data-ui-theme="default"] #screen-home .player-device {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  width: 100%;
+}
+
+html[data-ui-theme="default"] #screen-home:has(.home-queue.is-empty) .player-device {
+  flex: 1 0 auto;
+  justify-content: center;
+  min-height: 470px;
+  padding-bottom: 12px;
+}
+
+html[data-ui-theme="default"] .home-music.is-active {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+html[data-ui-theme="default"] .album-art {
+  width: clamp(180px, 50vw, 208px);
+  margin-bottom: 14px;
+}
+
+html[data-ui-theme="default"] .track-title,
+html[data-ui-theme="default"] .track-artist {
+  max-width: calc(100% - 32px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+html[data-ui-theme="default"] .track-artist {
+  margin-bottom: 8px;
+}
+
+html[data-ui-theme="default"] .progress-row {
+  width: 100%;
+  margin-bottom: 2px;
+  padding: 0 var(--page-x);
+}
+
+html[data-ui-theme="default"] #screen-home .player-chrome {
+  margin-top: 2px;
+}
+
+html[data-ui-theme="default"] .home-queue {
+  flex: 0 0 auto;
+  width: 100%;
+  margin-top: 14px;
+  padding-top: 4px;
+}
+
+html[data-ui-theme="default"] .home-queue.has-preview {
+  margin-top: 12px;
+}
+
+html[data-ui-theme="default"] #screen-settings .settings-card,
+html[data-ui-theme="ipod"] #screen-settings .settings-card {
+  margin: 0;
+  padding: 18px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-ui-theme="default"] #screen-settings .settings-card:first-of-type,
+html[data-ui-theme="ipod"] #screen-settings .settings-card:first-of-type {
+  padding-top: 8px;
+}
+
+html[data-ui-theme="default"] #screen-settings .settings-card:last-of-type,
+html[data-ui-theme="ipod"] #screen-settings .settings-card:last-of-type {
+  border-bottom: 0;
+}
+
+@media (max-height: 760px) {
+  html[data-ui-theme="default"] #screen-home:has(.home-queue.is-empty) .player-device {
+    min-height: 420px;
+  }
+
+  html[data-ui-theme="default"] .album-art {
+    width: min(176px, 48vw);
+  }
+}
+
+@media (display-mode: standalone) {
+  html.pwa-standalone {
+    /* .screen 등 콘텐츠는 nav 높이만 빼고, safe-area는 nav padding으로만 처리 */
+    --safe-bottom: 0px;
+    height: 100vh;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+
+  html.pwa-standalone body {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+
+  html.pwa-standalone .app {
+    height: 100vh;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+
+  html.pwa-standalone .bottom-nav,
+  html.pwa-standalone .mini-player {
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 480px;
+    margin-inline: auto;
+  }
+
+  html.pwa-standalone .bottom-nav {
+    bottom: 0;
+    height: var(--nav-h);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-sizing: content-box;
+    z-index: 40;
+  }
+
+  html.pwa-standalone .mini-player {
+    bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px));
+    z-index: 30;
+  }
+}
+
+.viewport-debug {
+  position: fixed;
+  left: 4px;
+  right: 4px;
+  top: calc(var(--safe-top) + 4px);
+  z-index: 9999;
+  margin: 0;
+  padding: 8px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.88);
+  color: #8f8;
+  font: 10px/1.35 ui-monospace, monospace;
+  white-space: pre-wrap;
+  pointer-events: none;
+  max-height: 42vh;
+  overflow: auto;
+}
+
+.nav-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.nav-btn:active {
+  transform: scale(0.94);
+}
+
+.nav-btn.active {
+  color: var(--text);
+}
+
+.nav-btn .icon {
+  width: 22px;
+  height: 22px;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--nav-h) + var(--mini-h) + 24px);
+  transform: translateX(-50%) translateY(12px);
+  background: rgba(30, 30, 30, 0.95);
+  color: var(--text);
+  padding: 10px 18px;
+  border-radius: 24px;
+  font-size: 13px;
+  z-index: 100;
+  max-width: 90%;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--dur-normal) var(--ease-out),
+    transform var(--dur-normal) var(--ease-out);
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.toast.is-long {
+  max-width: min(92%, 360px);
+  padding: 12px 16px;
+  border-radius: 14px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.queue-choice-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(16px, env(safe-area-inset-bottom, 0px));
+  background: rgba(0, 0, 0, 0.58);
+}
+
+.queue-choice-backdrop.hidden {
+  display: none;
+}
+
+.queue-choice-sheet {
+  width: 100%;
+  max-width: 420px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.56);
+}
+
+.queue-choice-copy h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.queue-choice-copy p {
+  margin: 0 0 16px;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.queue-choice-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.queue-choice-btn {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.queue-choice-btn:active {
+  transform: scale(0.99);
+}
+
+.queue-choice-btn-primary {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+}
+
+.queue-choice-btn-danger {
+  border-color: rgba(255, 89, 89, 0.5);
+  color: #ff8f8f;
+}
+
+@media (pointer: coarse) {
+  .toast {
+    bottom: calc(var(--nav-h) + var(--mini-h) + 96px);
+  }
+
+  .toast.is-long {
+    bottom: auto;
+    top: calc(36% + var(--safe-top));
+    transform: translateX(-50%) translateY(12px);
+  }
+
+  .toast.is-long.is-visible {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+#ytMount.yt-player-mount {
+  width: 100%;
+  height: 100%;
+}
+
+#ytMount.music-mode,
+#ytMount.video-mode {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1;
+  contain: layout style;
+}
+
+.video-stage iframe,
+.video-stage > div,
+#ytMount iframe {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  border: 0;
+  display: block;
+}
+
+/* fix121: keep the video framed and preserve YouTube's full control row */
+html[data-ui-theme="default"] #screen-home:has(.home-video.is-active) .home-video.is-active {
+  width: min(340px, calc(100% - (2 * var(--page-x))));
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+}
+
+html[data-ui-theme="default"] #screen-home:has(.home-video.is-active) .video-stage {
+  border-radius: 14px;
+}
+
+/* fix125: reserve the same media slot height so switching modes never moves controls */
+html[data-ui-theme="default"] #screen-home:has(.home-video.is-active) .home-panels {
+  height: calc(max(200px, clamp(180px, 50vw, 208px)) + 22px);
+}
+
+html[data-ui-theme="default"] #screen-home:has(.home-video.is-active) .home-video.is-active {
+  transform: translateY(6px);
+}
+
+html[data-ui-theme="default"] #screen-home:has(.home-video.is-active) .player-chrome {
+  margin-top: 12px;
+}
+
+@media (max-height: 760px) {
+  html[data-ui-theme="default"] #screen-home:has(.home-video.is-active) .home-panels {
+    height: 222px;
+  }
+
+  html[data-ui-theme="default"] #screen-home:has(.home-video.is-active) .home-video.is-active {
+    transform: translateY(6px);
+  }
+}
+
+.gate-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.88);
+}
+
+.gate-overlay.hidden {
+  display: none !important;
+}
+
+.gate-card {
+  width: min(100%, 360px);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.gate-title {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.gate-desc {
+  margin: 0 0 20px;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.gate-error {
+  margin: 12px 0 0;
+  color: var(--accent);
+  font-size: 13px;
+}
+
+.gate-withdraw-btn {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.settings-withdraw-link {
+  display: block;
+  width: 100%;
+  margin: 8px 0 24px;
+  padding: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.gate-account-actions {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.withdraw-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.withdraw-modal.hidden {
+  display: none !important;
+}
+
+.withdraw-card {
+  width: min(100%, 400px);
+  max-height: min(90dvh, 720px);
+  overflow-y: auto;
+  background: var(--surface2);
+  border: 1px solid rgba(255, 90, 90, 0.35);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.withdraw-title {
+  margin: 0 0 10px;
+  font-size: 20px;
+  color: #ff8a8a;
+}
+
+.withdraw-desc {
+  margin: 0 0 12px;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.withdraw-list {
+  margin: 0 0 16px;
+  padding-left: 18px;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.withdraw-phrase {
+  margin: 0 0 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  font-size: 14px;
+  line-height: 1.5;
+  word-break: keep-all;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.withdraw-phrase span {
+  min-width: 0;
+}
+
+.withdraw-phrase-copy {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.withdraw-phrase-copy:active {
+  transform: scale(0.96);
+}
+
+.withdraw-google-note a {
+  color: #8ee4a0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.withdraw-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.settings-danger {
+  border-color: rgba(255, 90, 90, 0.35);
+}
+
+.settings-danger-note {
+  color: #ffb4b4;
+}
+
+.btn-danger {
+  border: 1px solid rgba(255, 90, 90, 0.55);
+  border-radius: 10px;
+  background: rgba(255, 60, 60, 0.18);
+  color: #ff8a8a;
+  font-size: 15px;
+  font-weight: 600;
+  min-height: 44px;
+  padding: 10px 16px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.btn-danger:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-danger:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+.app.app-locked {
+  pointer-events: none;
+  user-select: none;
+}
+
+.app.app-booting {
+  pointer-events: none;
+  user-select: none;
+}
+
+html.page-admin,
+body.page-admin {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: auto;
+  min-height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.page-admin {
+  position: static;
+  inset: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.admin-page {
+  max-width: 960px;
+  margin: 0 auto;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100dvh;
+  padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(24px, env(safe-area-inset-bottom, 0px));
+  background: var(--bg);
+  overflow-x: hidden;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.admin-header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.admin-gate {
+  margin: auto;
+  align-self: center;
+  width: min(100%, 360px);
+}
+
+.admin-main {
+  flex: 1 0 auto;
+  width: 100%;
+  min-width: 0;
+}
+
+.admin-main h2 {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+.admin-create {
+  margin-bottom: 20px;
+}
+
+.admin-feedback-wrap {
+  margin-top: 20px;
+}
+
+.admin-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.admin-section-head h2 {
+  margin: 0;
+}
+
+.admin-codes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-feedback-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-feedback-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.admin-feedback-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.admin-feedback-type {
+  font-size: 12px;
+  color: #8ee4a0;
+}
+
+.admin-feedback-time {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.admin-feedback-message {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.admin-feedback-meta {
+  margin: 0;
+  display: grid;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.admin-feedback-logs {
+  margin-top: 10px;
+}
+
+.admin-feedback-logs summary {
+  cursor: pointer;
+  color: var(--link);
+  font-size: 12px;
+}
+
+.admin-feedback-logs pre {
+  max-height: 220px;
+  overflow: auto;
+  margin: 8px 0 0;
+  padding: 10px;
+  border-radius: 8px;
+  background: #101010;
+  color: #d6d6d6;
+  font: 11px/1.45 ui-monospace, monospace;
+  white-space: pre-wrap;
+}
+
+.admin-code-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.admin-code-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.admin-code-value {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-family: ui-monospace, monospace;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  padding: 4px 0;
+  cursor: pointer;
+  word-break: break-all;
+  line-height: 1.35;
+  touch-action: manipulation;
+  min-height: 44px;
+}
+
+.admin-code-value-text {
+  display: block;
+}
+
+.admin-code-copy-hint {
+  display: block;
+  margin-top: 2px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.admin-code-value:active .admin-code-value-text {
+  color: #8ee4a0;
+}
+
+.admin-code-copy-inline {
+  border: none;
+  background: transparent;
+  color: #8ee4a0;
+  font-family: ui-monospace, monospace;
+  font-size: inherit;
+  font-weight: 600;
+  padding: 0 2px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  touch-action: manipulation;
+}
+
+.admin-badge {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface2);
+  color: var(--text-muted);
+}
+
+.admin-badge-active {
+  background: rgba(52, 168, 83, 0.2);
+  color: #8ee4a0;
+}
+
+.admin-badge-unused {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.admin-badge-expired {
+  background: rgba(255, 0, 0, 0.15);
+  color: #ff8a8a;
+}
+
+.admin-code-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+  margin: 0 0 10px;
+}
+
+.admin-code-foot {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 4px;
+}
+
+.admin-btn-delete {
+  border: 1px solid rgba(255, 90, 90, 0.45);
+  border-radius: 8px;
+  background: transparent;
+  color: #ff8a8a;
+  font-size: 13px;
+  min-height: 36px;
+  padding: 6px 14px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.admin-btn-delete:active {
+  transform: scale(0.97);
+}
+
+.admin-code-meta > div {
+  min-width: 0;
+}
+
+.admin-code-meta dt {
+  margin: 0 0 2px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.admin-code-meta dd {
+  margin: 0;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 760px) {
+  .admin-code-card {
+    display: grid;
+    grid-template-columns: minmax(220px, 1.1fr) minmax(360px, 1.6fr) auto;
+    align-items: center;
+    column-gap: 18px;
+    row-gap: 12px;
+  }
+
+  .admin-code-head,
+  .admin-code-meta,
+  .admin-code-foot {
+    margin: 0;
+  }
+
+  .admin-code-meta {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .admin-code-foot {
+    justify-content: flex-end;
+  }
+
+  .admin-adjust {
+    grid-column: 1 / -1;
+  }
+}
+
+.admin-empty {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  text-align: center;
+  padding: 24px 0;
+}
+
+.admin-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%) translateY(12px);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 16px;
+  border-radius: 24px;
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 600;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.admin-toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.admin-table code {
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+}
+
+.admin-actions {
+  min-width: 0;
+}
+
+.admin-adjust {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-adjust-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.admin-chip {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 12px;
+  min-height: 36px;
+  padding: 6px 12px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.admin-chip:active {
+  transform: scale(0.97);
+}
+
+.admin-adjust-custom,
+.admin-adjust-exact {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+@media (min-width: 520px) {
+  .admin-adjust-custom {
+    grid-template-columns: 64px 1fr 1fr auto;
+    align-items: center;
+  }
+
+  .admin-adjust-exact {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+}
+
+.admin-adjust-custom .field-input,
+.admin-adjust-custom .field-select,
+.admin-adjust-exact .field-input {
+  margin-bottom: 0;
+}
+
+.admin-adjust-amount {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  font-size: 16px;
+}
+
+.admin-adjust-unit,
+.admin-adjust-dir {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  font-size: 16px;
+}
+
+.admin-adjust-datetime {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  font-size: 16px;
+}
+
+.admin-adjust-custom .btn-text,
+.admin-adjust-exact .btn-text {
+  min-height: 40px;
+  padding: 8px 12px;
+}
+
+.admin-adjust-meta {
+  margin: 0;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.admin-create-duration {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.admin-create-duration .field-input {
+  width: 100%;
+  min-width: 0;
+  font-size: 16px;
+  padding: 10px 12px;
+}
+
+.admin-unit-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-right: 4px;
+}
+
+.admin-unlimited {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+@media (max-width: 420px) {
+  .admin-create-duration {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
+    gap: 6px;
+  }
+
+  .admin-create-duration .field-input {
+    margin-bottom: 0;
+  }
+
+  .admin-unit-label {
+    margin-right: 0;
+    white-space: nowrap;
+  }
+
+  .admin-chip {
+    flex: 1 1 calc(33.333% - 6px);
+    min-width: 0;
+    padding: 6px 8px;
+    text-align: center;
+  }
+}
+
+.admin-chip-accent {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.legal-page {
+  max-width: 720px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  padding: max(16px, env(safe-area-inset-top, 0px)) 20px max(32px, env(safe-area-inset-bottom, 0px));
+  background: var(--bg);
+}
+
+.legal-header {
+  margin-bottom: 24px;
+}
+
+.legal-header h1 {
+  margin: 12px 0 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.legal-main {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+.legal-meta {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin: 0 0 20px;
+}
+
+.legal-main h2 {
+  margin: 28px 0 10px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.legal-main p {
+  margin: 0 0 12px;
+  color: #e0e0e0;
+}
+
+.legal-main ul {
+  margin: 0 0 12px;
+  padding-left: 1.25rem;
+  color: #e0e0e0;
+}
+
+.legal-main li {
+  margin-bottom: 6px;
+}
+
+.legal-main strong {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.legal-nav {
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.legal-nav a {
+  color: var(--text-muted);
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.legal-nav a:hover {
+  color: var(--text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 다음 재생 머리줄의 비우기 버튼 */
+.home-queue {
+  position: relative;
+}
+
+.home-queue-clear {
+  position: absolute;
+  top: 18px;
+  right: 40px;
+  z-index: 2;
+  min-height: 28px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--surface2);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.home-queue-clear:hover {
+  color: var(--text);
+}
+
+.home-queue-clear.hidden {
+  display: none;
+}

@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Playlist Player</title>
+    <meta name="theme-color" content="#0f0f0f" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Playlist Player" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="manifest.webmanifest?v=self-host-1" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=self-host-1" />
+    <link rel="stylesheet" href="styles-gameboy.css?v=20260904fix163" />
+    <link rel="stylesheet" href="watch-app.css?v=self-host-1" />
+    <script>
+      (function () {
+        if (/\/watch\/?$/.test(window.location.pathname)) {
+          document.documentElement.dataset.watchApp = "true";
+        }
+        if (
+          window.matchMedia("(display-mode: standalone)").matches ||
+          window.navigator.standalone === true
+        ) {
+          document.documentElement.classList.add("pwa-standalone");
+        }
+      })();
+    </script>
+    <style>
+      #serviceNotice:not([open]) { display: none; }
+      #serviceNotice {
+        box-sizing: border-box;
+        width: calc(100% - 32px);
+        max-width: 380px;
+        padding: 22px;
+        border: 1px solid #393939;
+        border-radius: 18px;
+        background: #202020;
+        color: #f5f5f5;
+      }
+      #serviceNotice::backdrop { background: rgb(0 0 0 / 65%); }
+      #serviceNotice.service-notice-fallback {
+        position: fixed;
+        inset: 50% auto auto 50%;
+        z-index: 1000;
+        margin: 0;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 0 100vmax rgba(0, 0, 0, .65);
+      }
+      #serviceNoticeTitle { margin: 0 0 10px; font-size: 18px; }
+      #serviceNoticeText { margin: 0 0 18px; color: #d2d2d2; font-size: 15px; line-height: 1.6; }
+      #serviceNoticeClose { min-height: 44px; }
+    </style>
+  </head>
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+      <symbol id="icon-home" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></symbol>
+      <symbol id="icon-library" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></symbol>
+      <symbol id="icon-add" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></symbol>
+      <symbol id="icon-settings" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96a7.02 7.02 0 0 0-1.63-.94l-.36-2.54A.484.484 0 0 0 14.06 2h-3.12c-.24 0-.44.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.63.94l-2.39-.96a.488.488 0 0 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.04.71 1.63.94l.36 2.54c.05.24.24.41.47.41h3.12c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.63-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.49.49 0 0 0-.12-.61l-2.03-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/></symbol>
+      <symbol id="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
+      <symbol id="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></symbol>
+      <symbol id="icon-prev" viewBox="0 0 24 24"><path d="M6 6h2v12H6V6zm3.5 6 8.5 6V6l-8.5 6z"/></symbol>
+      <symbol id="icon-next" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></symbol>
+      <symbol id="icon-fullscreen" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></symbol>
+      <symbol id="icon-fullscreen-exit" viewBox="0 0 24 24"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></symbol>
+      <symbol id="icon-shuffle" viewBox="0 0 24 24"><path d="M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></symbol>
+      <symbol id="icon-repeat" viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></symbol>
+      <symbol id="icon-repeat-one" viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/><path d="M11 11h2v6h-2z" opacity=".9"/></symbol>
+      <symbol id="icon-close" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></symbol>
+      <symbol id="icon-edit" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></symbol>
+      <symbol id="icon-delete" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></symbol>
+      <symbol id="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></symbol>
+      <symbol id="icon-back" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></symbol>
+      <symbol id="icon-open-watch" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.3 9.29 1.42 1.42L19 6.41V10h2V3h-7ZM5 5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6h-2v6H5V7h6V5H5Z"/></symbol>
+      <symbol id="icon-history" viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></symbol>
+      <symbol id="icon-reco" viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6Z"/></symbol>
+      <symbol id="icon-chevron-right" viewBox="0 0 24 24"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41Z"/></symbol>
+      <symbol id="icon-chevron-down" viewBox="0 0 24 24"><path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></symbol>
+      <symbol id="icon-google" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></symbol>
+    </svg>
+    <div id="app" class="app app-booting">
+      <header class="app-header">
+        <button class="watch-rail-toggle" id="watchRailToggle" type="button" aria-expanded="false" aria-controls="appBottomNav" aria-label="메뉴 열기" title="메뉴">
+          <svg class="icon" aria-hidden="true"><use href="#icon-chevron-right"/></svg>
+        </button>
+        <h1 class="app-logo">
+          <span class="watch-home-brand-mark" aria-hidden="true">P</span>
+          <span>Playlist Player</span>
+        </h1>
+        <form class="watch-home-search" id="watchHomeSearch" role="search">
+          <label class="watch-sr-only" for="watchHomeQuery">YouTube 검색, URL 또는 영상 ID</label>
+          <input id="watchHomeQuery" type="search" autocomplete="off" spellcheck="false" placeholder="YouTube 검색, URL 또는 영상 ID" />
+          <button type="submit" aria-label="검색" title="검색">
+            <svg class="icon" aria-hidden="true"><use href="#icon-search"/></svg>
+          </button>
+        </form>
+        <a class="watch-home-back" href="./">
+          <svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg>
+          <span>플레이어</span>
+        </a>
+        <div class="header-auth">
+          <button class="btn-google hidden" id="btnHeaderGoogle" type="button">
+            <svg class="icon-google" aria-hidden="true"><use href="#icon-google"/></svg>
+            <span>Google 로그인</span>
+          </button>
+          <button class="header-user hidden" id="btnHeaderUser" type="button" aria-label="계정">
+            <img class="header-avatar hidden" id="headerAvatar" alt="" width="28" height="28" />
+            <span class="header-user-label" id="headerUserLabel">계정</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- 홈 -->
+      <section class="screen screen-active" id="screen-home" data-screen="home">
+        <div class="mode-segment" role="tablist">
+          <span class="mode-segment-indicator" id="modeIndicator"></span>
+          <button class="mode-segment-btn active" data-mode="music" type="button">음악</button>
+          <button class="mode-segment-btn" data-mode="video" type="button">영상</button>
+        </div>
+        <div class="watch-launch-row hidden" id="watchLaunchRow">
+          <button class="watch-launch-btn" id="btnOpenWatch" type="button" title="별도 시청 페이지에서 열기">
+            <svg class="icon" aria-hidden="true"><use href="#icon-open-watch"/></svg>
+            <span>별도 시청</span>
+          </button>
+        </div>
+
+        <div class="ipod-device player-device">
+          <div class="ipod-screen player-screen">
+          <div class="home-panels">
+          <div class="home-music is-active" id="homeMusic">
+            <div class="album-art" id="albumArt"></div>
+          </div>
+
+          <div class="home-video" id="homeVideo">
+            <div class="video-stage" id="videoStage">
+              <div id="ytMount" class="yt-player-mount music-mode"></div>
+            </div>
+          </div>
+          </div>
+
+            <div class="player-display-info">
+              <h2 class="track-title" id="trackTitle">재생할 곡을 선택하세요</h2>
+              <p class="track-artist" id="trackArtist">보관함에서 재생목록을 고르거나 URL을 추가하세요</p>
+              <div class="watch-home-meta-row">
+                <button class="watch-home-channel" id="watchHomeChannelBtn" type="button" disabled>
+                  <span class="watch-home-channel-avatar" id="watchHomeChannelAvatar" aria-hidden="true">P</span>
+                  <span class="watch-home-channel-copy">
+                    <strong id="watchHomeChannel">Playlist Player</strong>
+                    <span id="watchHomeQueueLabel">재생목록에서 영상을 선택하세요</span>
+                  </span>
+                </button>
+                <div class="watch-home-actions">
+                  <button id="watchHomeCopyLink" type="button" disabled>
+                    <svg class="icon" aria-hidden="true"><use href="#icon-copy"/></svg>
+                    <span>링크 복사</span>
+                  </button>
+                  <a id="watchHomeYoutubeLink" href="https://www.youtube.com/" target="_blank" rel="noopener" aria-disabled="true">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-open-watch"/></svg>
+                    <span>YouTube에서 보기</span>
+                  </a>
+                </div>
+              </div>
+              <div class="progress-row">
+                <span id="musicCur">0:00</span>
+                <div class="progress-bar-hit" id="musicBarHit">
+                  <div class="progress-bar" id="musicBar" aria-hidden="true">
+                    <span id="musicFill"></span>
+                  </div>
+                  <input class="progress-range" id="musicRange" type="range" min="0" max="1000" value="0" step="1" aria-label="재생 위치" />
+                </div>
+                <span id="musicDur">0:00</span>
+              </div>
+            </div>
+          </div>
+          <div class="player-chrome">
+            <div class="controls-row">
+              <button class="ctrl-btn" id="btnShuffle" type="button" title="셔플" aria-label="셔플"><svg class="icon"><use href="#icon-shuffle"/></svg></button>
+              <button class="ctrl-btn" id="btnPrev" type="button" aria-label="이전"><svg class="icon"><use href="#icon-prev"/></svg></button>
+              <button class="ctrl-btn ctrl-play" id="btnPlay" type="button" aria-label="재생">
+                <svg class="icon icon-play"><use href="#icon-play"/></svg>
+                <svg class="icon icon-pause"><use href="#icon-pause"/></svg>
+              </button>
+              <button class="ctrl-btn" id="btnNext" type="button" aria-label="다음"><svg class="icon"><use href="#icon-next"/></svg></button>
+              <button class="ctrl-btn" id="btnRepeat" type="button" title="반복" aria-label="반복">
+                <svg class="icon icon-repeat-all"><use href="#icon-repeat"/></svg>
+                <svg class="icon icon-repeat-one"><use href="#icon-repeat-one"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <section class="home-queue is-collapsed" id="homeQueue" aria-label="다음 재생">
+          <button class="home-queue-toggle" id="btnToggleHomeQueue" type="button" aria-expanded="false" aria-controls="homeQueueBody">
+            <span class="home-queue-toggle-label">
+              <span class="home-queue-title">다음 재생</span>
+              <span class="home-queue-count" id="homeQueueCount"></span>
+            </span>
+            <svg class="icon icon-sm home-queue-chevron" aria-hidden="true"><use href="#icon-chevron-down"/></svg>
+          </button>
+          <button class="home-queue-clear hidden" id="btnClearHomeQueue" type="button">비우기</button>
+          <div class="watch-autoplay" id="watchAutoplay">
+            <span class="watch-autoplay-label">자동 재생</span>
+            <button class="watch-autoplay-switch" id="btnWatchAutoplay" type="button" role="switch" aria-checked="false" aria-label="자동 재생">
+              <span class="watch-autoplay-knob"></span>
+            </button>
+          </div>
+          <div class="home-queue-preview" id="homeQueuePreview"></div>
+          <div class="home-queue-body" id="homeQueueBody" hidden inert>
+            <ul class="home-queue-list" id="waitingList"></ul>
+          </div>
+        </section>
+      </section>
+
+      <!-- 보관함 -->
+      <section class="screen" id="screen-library" data-screen="library">
+        <div class="screen-toolbar">
+          <h2>보관함</h2>
+          <button class="btn-text hidden" id="btnNewPlaylist" type="button">+ 새 목록</button>
+          <button class="btn-text hidden" id="btnClearWaiting" type="button">목록 비우기</button>
+          <button class="btn-text hidden" id="btnClearHistory" type="button">기록 삭제</button>
+        </div>
+        <div class="library-segment" role="tablist">
+          <button class="library-segment-btn active" data-lib-tab="playlists" type="button">재생목록</button>
+          <button class="library-segment-btn" data-lib-tab="queue" type="button">다음 재생</button>
+          <button class="library-segment-btn" data-lib-tab="history" type="button">시청 기록</button>
+        </div>
+        <div class="library-panel" id="libraryPlaylists">
+          <ul class="playlist-cards" id="playlistCards"></ul>
+          <div class="library-detail hidden" id="libraryDetail">
+            <button class="btn-back" id="btnBackLibrary" type="button"><svg class="icon icon-sm"><use href="#icon-back"/></svg> 목록</button>
+            <h3 id="detailPlaylistName"></h3>
+            <input class="search-input" id="librarySearch" placeholder="목록에서 검색" type="search" />
+            <div class="detail-actions">
+              <button class="btn-primary btn-block" id="btnAddAllToQueue" type="button">전체담기</button>
+              <button class="btn-secondary btn-block" id="btnAddAllToQueueShuffle" type="button">셔플 전체담기</button>
+            </div>
+            <ul class="track-list" id="trackList"></ul>
+          </div>
+        </div>
+        <div class="library-panel hidden" id="libraryQueue">
+          <p class="library-queue-hint">재생목록·검색·시청 기록에서 곡 옆 「다음 재생」 버튼으로 담을 수 있습니다.</p>
+          <input class="search-input" id="waitingSearch" placeholder="대기 목록에서 검색" type="search" />
+          <ul class="track-list" id="libraryWaitingList"></ul>
+        </div>
+        <div class="library-panel hidden" id="libraryHistory">
+          <input class="search-input" id="historySearch" placeholder="시청 기록 검색" type="search" />
+          <ul class="track-list" id="historyList"></ul>
+          <div class="scroll-sentinel hidden" id="historyScrollSentinel" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <!-- 추가 -->
+      <section class="screen" id="screen-add" data-screen="add">
+        <h2 class="screen-title">추가 · 검색</h2>
+        <div class="add-segment" role="tablist">
+          <button class="add-segment-btn active" data-add-tab="url" type="button">URL</button>
+          <button class="add-segment-btn" data-add-tab="search" type="button">검색</button>
+        </div>
+
+        <div class="add-panel add-panel-url" id="addPanelUrl">
+          <div class="url-target-card">
+            <label class="field-label" for="targetPlaylist">재생목록</label>
+            <select class="field-select" id="targetPlaylist"></select>
+          </div>
+
+          <div class="url-card url-card-single">
+            <label class="field-label" for="singleUrl">영상 / 재생목록 / 채널 URL</label>
+            <input class="field-input url-main-input" id="singleUrl" placeholder="youtu.be/… · list=PL… · @채널" type="text" />
+            <div class="url-action-grid" aria-label="URL 실행">
+              <button class="btn-secondary" id="btnUrlPlay" type="button">재생</button>
+              <button class="btn-secondary" id="btnUrlQueue" type="button">다음 재생</button>
+              <button class="btn-secondary" id="btnAddSingle" type="button">목록 추가</button>
+            </div>
+          </div>
+
+          <div class="url-card url-card-bulk">
+            <div class="url-card-head">
+              <label class="field-label" for="bulkUrls">여러 URL</label>
+              <span class="url-card-sub">한 줄에 하나</span>
+            </div>
+            <textarea class="field-textarea" id="bulkUrls" placeholder="영상 URL&#10;재생목록 URL (list=PL...)&#10;채널 URL (youtube.com/@...)"></textarea>
+            <button class="btn-primary btn-block" id="btnAddBulk" type="button">한꺼번에 추가</button>
+          </div>
+        </div>
+
+        <div class="add-panel add-panel-search hidden" id="addPanelSearch">
+          <div class="watch-search-results-head">
+            <div>
+              <p id="watchSearchResultsKind">검색 결과</p>
+              <h2 id="watchSearchResultsTitle">YouTube</h2>
+            </div>
+            <button class="watch-sub-btn hidden" id="btnChannelSubscribe" type="button">구독</button>
+            <button id="watchSearchResultsClose" type="button" aria-label="검색 결과 닫기" title="검색 결과 닫기">
+              <svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg>
+            </button>
+          </div>
+          <div class="watch-channel-filter hidden" id="watchChannelFilter" role="tablist" aria-label="영상 종류">
+            <button class="watch-channel-filter-btn active" data-channel-filter="all" type="button">전체</button>
+            <button class="watch-channel-filter-btn" data-channel-filter="long" type="button">롱폼</button>
+            <button class="watch-channel-filter-btn" data-channel-filter="short" type="button">쇼츠</button>
+          </div>
+          <div class="search-type-segment" role="tablist">
+            <button class="search-type-btn active" data-search-kind="video" type="button">영상</button>
+            <button class="search-type-btn" data-search-kind="channel" type="button">채널</button>
+          </div>
+          <label class="field-label" for="searchQuery">유튜브 검색</label>
+          <div class="field-row">
+            <input class="field-input" id="searchQuery" placeholder="곡 제목, 아티스트, 키워드" type="search" enterkeyhint="search" />
+            <button class="btn-primary" id="btnSearch" type="button">
+              <svg class="icon icon-sm" aria-hidden="true"><use href="#icon-search"/></svg>
+              검색
+            </button>
+          </div>
+          <p class="search-hint hidden" id="searchHint"></p>
+          <label class="field-label" for="targetPlaylistSearch">＋ 추가할 재생목록</label>
+          <select class="field-select" id="targetPlaylistSearch"></select>
+          <ul class="search-results" id="searchResults"></ul>
+          <div class="scroll-sentinel hidden" id="searchScrollSentinel" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <!-- 알고리즘 (추천) -->
+      <section class="screen" id="screen-reco" data-screen="reco">
+        <div class="watch-reco-head">
+          <div>
+            <p id="recoKind">추천</p>
+            <h2 id="recoTitle">알고리즘</h2>
+          </div>
+          <button class="btn-text" id="btnRecoRefresh" type="button">새로고침</button>
+        </div>
+        <p class="search-hint" id="recoHint"></p>
+        <ul class="search-results" id="recoResults"></ul>
+      </section>
+
+      <!-- 설정 -->
+      <section class="screen" id="screen-settings" data-screen="settings">
+        <h2 class="screen-title">설정</h2>
+        <div class="settings-card">
+          <p class="settings-label">이용 권한</p>
+          <p class="settings-value" id="accessStatus">확인 중…</p>
+          <a class="btn-text hidden" id="linkAdmin" href="./admin.html">관리자 페이지</a>
+        </div>
+        <div class="settings-card">
+          <p class="settings-label">계정</p>
+          <p class="settings-value" id="authStatus">로그인 안 됨</p>
+          <button class="btn-primary btn-block btn-google-settings" id="btnGoogleLogin" type="button">
+            <svg class="icon-google" aria-hidden="true"><use href="#icon-google"/></svg>
+            <span>Google로 로그인</span>
+          </button>
+          <button class="btn-secondary btn-block hidden" id="btnLogout" type="button">로그아웃</button>
+        </div>
+        <div class="settings-card">
+          <p class="settings-label">동기화</p>
+          <p class="settings-value" id="syncStatus">확인 중…</p>
+        </div>
+        <div class="settings-card">
+          <label class="field-label" for="defaultMode">기본 모드</label>
+          <select class="field-select" id="defaultMode">
+            <option value="music">음악</option>
+            <option value="video">영상</option>
+          </select>
+        </div>
+        <div class="settings-card">
+          <label class="field-label" for="uiTheme">UI 스타일</label>
+          <select class="field-select" id="uiTheme">
+            <option value="default">기본</option>
+            <option value="ipod">iPod</option>
+            <option value="gameboy">Game Boy</option>
+          </select>
+        </div>
+        <div class="settings-card">
+          <p class="field-label">영상 화질</p>
+          <div class="quality-segment" role="group" aria-label="영상 화질">
+            <button class="quality-segment-btn" type="button" data-quality="auto">자동</button>
+            <button class="quality-segment-btn" type="button" data-quality="highres">최대 화질</button>
+          </div>
+          <p class="settings-note">「최대 화질」은 <strong>전체 화면</strong>에서 해당 영상이 지원하는 최고 화질(4K·1440p·1080p 등)로 맞춥니다.</p>
+        </div>
+        <div class="settings-card">
+          <p class="settings-label">피드백 · 오류</p>
+          <select class="field-select" id="feedbackType" aria-label="피드백 유형">
+            <option value="bug">오류</option>
+            <option value="feedback">피드백</option>
+            <option value="layout">화면/레이아웃</option>
+          </select>
+          <textarea class="field-textarea feedback-textarea" id="feedbackMessage" maxlength="4000" placeholder="무슨 일이 있었는지 적어주세요"></textarea>
+          <label class="field-check">
+            <input id="feedbackIncludeLogs" type="checkbox" />
+            <span>최근 디버그 로그와 화면 정보를 함께 보내기</span>
+          </label>
+          <button class="btn-primary btn-block" id="btnSendFeedback" type="button">보내기</button>
+        </div>
+        <nav class="legal-nav" aria-label="서비스 안내">
+          <a href="./privacy.html">개인정보처리방침</a>
+          <a href="./terms.html">서비스 약관</a>
+        </nav>
+        <button class="btn-text settings-withdraw-link hidden" id="btnOpenWithdraw" type="button">계정 삭제</button>
+      </section>
+
+      <!-- 미니 플레이어 -->
+      <div class="mini-player" id="miniPlayer">
+        <button class="mini-player-main" id="miniPlayerOpen" type="button">
+          <span class="mini-art" id="miniArt"></span>
+          <span class="mini-meta">
+            <span class="mini-title" id="miniTitle">—</span>
+            <span class="mini-artist" id="miniArtist">—</span>
+          </span>
+        </button>
+        <button class="mini-play" id="miniPlayBtn" type="button" aria-label="재생">
+          <svg class="icon icon-play"><use href="#icon-play"/></svg>
+          <svg class="icon icon-pause"><use href="#icon-pause"/></svg>
+        </button>
+      </div>
+
+      <button class="watch-drawer-backdrop hidden" id="watchDrawerBackdrop" type="button" aria-label="패널 닫기"></button>
+
+      <!-- 하단 탭 -->
+      <nav class="bottom-nav" id="appBottomNav">
+        <button class="nav-btn active" data-nav="home" type="button">
+          <svg class="icon"><use href="#icon-home"/></svg>
+          <span>홈</span>
+        </button>
+        <button class="nav-btn" data-nav="library" type="button">
+          <svg class="icon"><use href="#icon-library"/></svg>
+          <span>보관함</span>
+        </button>
+        <button class="nav-btn" data-nav="add" type="button">
+          <svg class="icon"><use href="#icon-search"/></svg>
+          <span>검색</span>
+        </button>
+        <button class="nav-btn nav-btn-reco" data-nav="reco" type="button">
+          <svg class="icon"><use href="#icon-reco"/></svg>
+          <span>알고리즘</span>
+        </button>
+        <button class="nav-btn" data-nav="settings" type="button">
+          <svg class="icon"><use href="#icon-settings"/></svg>
+          <span>설정</span>
+        </button>
+      </nav>
+
+      <div class="queue-choice-backdrop hidden" id="queueChoiceDialog" role="dialog" aria-modal="true" aria-labelledby="queueChoiceTitle">
+        <div class="queue-choice-sheet">
+          <div class="queue-choice-copy">
+            <h3 id="queueChoiceTitle">다음 재생에 담기</h3>
+            <p id="queueChoiceDesc">이미 담긴 곡들이 있습니다.</p>
+          </div>
+          <div class="queue-choice-actions">
+            <button class="queue-choice-btn queue-choice-btn-primary" type="button" data-queue-choice="append">추가로 담기</button>
+            <button class="queue-choice-btn queue-choice-btn-danger" type="button" data-queue-choice="replace">기존 목록 비우고 담기</button>
+            <button class="queue-choice-btn" type="button" data-queue-choice="cancel">취소</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="toast" id="toast"></div>
+    </div>
+
+    <div id="gateOverlay" class="gate-overlay hidden">
+      <div class="gate-card">
+        <h2 class="gate-title" id="gateTitle">로그인이 필요합니다</h2>
+        <p class="gate-desc" id="gateDesc">Google 계정으로 로그인해야 이용할 수 있습니다.</p>
+        <button class="btn-primary btn-block btn-google-settings" id="gateLoginBtn" type="button">
+          <svg class="icon-google" aria-hidden="true"><use href="#icon-google"/></svg>
+          <span>Google 로그인</span>
+        </button>
+        <div id="gateCodePanel" class="hidden">
+          <label class="field-label" for="gateCodeInput">이용 코드</label>
+          <input class="field-input" id="gateCodeInput" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="영문·숫자 코드" />
+          <button class="btn-primary btn-block" id="gateCodeBtn" type="button">코드 확인</button>
+          <p class="gate-error hidden" id="gateCodeError"></p>
+        </div>
+        <div class="gate-account-actions hidden" id="gateAccountActions">
+          <button class="btn-secondary btn-block" id="gateLogoutBtn" type="button">로그아웃</button>
+          <button class="btn-text gate-withdraw-btn" id="gateWithdrawBtn" type="button">계정 삭제</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="withdrawModal" class="withdraw-modal hidden" role="dialog" aria-modal="true" aria-labelledby="withdrawTitle">
+      <div class="withdraw-card">
+        <h2 class="withdraw-title" id="withdrawTitle">계정 삭제</h2>
+        <p class="withdraw-desc">계정을 삭제하면 아래 <strong>서비스 데이터</strong>가 즉시 영구 삭제되며 복구할 수 없습니다.</p>
+        <ul class="withdraw-list">
+          <li>재생목록 및 시청 기록</li>
+          <li>클라우드에 저장된 설정</li>
+          <li>이용 코드 등록 정보</li>
+        </ul>
+        <p class="withdraw-desc withdraw-google-note">
+          Google 계정의 「연결된 앱」 목록은 삭제 후에도 남아 있을 수 있습니다. 완전히 끊으려면
+          <a href="https://myaccount.google.com/connections" target="_blank" rel="noopener noreferrer">Google 계정 설정</a>에서 이 앱을 제거해 주세요.
+        </p>
+        <p class="withdraw-desc">계속하려면 아래 문장을 <strong>똑같이</strong> 입력하세요.</p>
+        <p class="withdraw-phrase">
+          <span id="withdrawPhraseText">위 내용을 모두 이해했습니다</span>
+          <button class="withdraw-phrase-copy" id="withdrawCopyPhrase" type="button" aria-label="확인 문장 복사" title="복사">
+            <svg class="icon icon-sm" aria-hidden="true"><use href="#icon-copy"/></svg>
+          </button>
+        </p>
+        <label class="field-label" for="withdrawConfirmInput">확인 문장</label>
+        <input class="field-input" id="withdrawConfirmInput" type="text" autocomplete="off" spellcheck="false" />
+        <p class="gate-error hidden" id="withdrawError"></p>
+        <div class="withdraw-actions">
+          <button class="btn-danger btn-block" id="withdrawSubmit" type="button" disabled>삭제하기</button>
+          <button class="btn-secondary btn-block" id="withdrawCancel" type="button">취소</button>
+        </div>
+      </div>
+    </div>
+
+    <dialog id="serviceNotice" aria-labelledby="serviceNoticeTitle" aria-describedby="serviceNoticeText">
+      <h2 id="serviceNoticeTitle">서비스 이용 안내</h2>
+      <p id="serviceNoticeText">현재 여러 기능에서 오류가 발생하고 있습니다. 곧 수정할 예정이니 이용에 참고 부탁드립니다.</p>
+      <button id="serviceNoticeClose" class="btn-primary btn-block" type="button" autofocus>확인</button>
+    </dialog>
+    <script>
+      (function () {
+        var key = "player-service-notice-20261109";
+        var notice = document.getElementById("serviceNotice");
+        var button = document.getElementById("serviceNoticeClose");
+        try {
+          if (sessionStorage.getItem(key)) return;
+        } catch (error) {}
+
+        function rememberDismissal() {
+          try { sessionStorage.setItem(key, "1"); } catch (error) {}
+        }
+
+        button.addEventListener("click", function () {
+          rememberDismissal();
+          if (typeof notice.close === "function") notice.close();
+          else notice.removeAttribute("open");
+        });
+        notice.addEventListener("cancel", rememberDismissal);
+
+        if (typeof notice.showModal === "function") {
+          notice.showModal();
+        } else {
+          notice.classList.add("service-notice-fallback");
+          notice.setAttribute("open", "");
+          button.focus();
+        }
+      })();
+    </script>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "./js/playlists.js": "./js/playlists.js?v=self-host-1",
+          "./js/player.js": "./js/player.js?v=self-host-1",
+          "./js/auth.js": "./js/auth.js?v=self-host-1",
+          "./js/access.js": "./js/access.js?v=self-host-1",
+          "./js/sync.js": "./js/sync.js?v=self-host-1",
+          "./js/withdraw.js": "./js/withdraw.js?v=self-host-1",
+          "./js/media-session.js": "./js/media-session.js?v=self-host-1",
+          "./js/background-audio.js": "./js/background-audio.js?v=self-host-1",
+          "./js/debug-log.js": "./js/debug-log.js?v=self-host-1",
+          "./js/youtube-api.js": "./js/youtube-api.js?v=self-host-1"
+        }
+      }
+    </script>
+    <script type="module" src="js/app.js?v=self-host-1"></script>
+  </body>
+</html>

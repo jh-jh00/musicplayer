@@ -1,0 +1,590 @@
+/* Game Boy theme: isolated from the iPod theme and its layout rules. */
+html[data-ui-theme="gameboy"] {
+  --bg: #d6d2c2;
+  --surface: #cbc7b7;
+  --surface2: #b8b4a5;
+  --text: #171923;
+  --text-muted: #545864;
+  --accent: #941653;
+  --accent-soft: #721341;
+  --border: #858174;
+  --player-meta-gap: 8px;
+  --player-controls-gap: 4px;
+  --player-video-gap: 12px;
+  font-family: "Courier New", "Lucida Console", monospace;
+}
+
+html[data-ui-theme="gameboy"],
+html[data-ui-theme="gameboy"] body {
+  background: #9da1a5;
+}
+
+html[data-ui-theme="gameboy"] * {
+  image-rendering: pixelated;
+}
+
+html[data-ui-theme="gameboy"] .app {
+  background: #d6d2c2;
+  color: var(--text);
+  box-shadow:
+    inset 3px 0 0 rgba(255, 255, 255, 0.28),
+    inset -3px 0 0 rgba(73, 71, 64, 0.18);
+}
+
+html[data-ui-theme="gameboy"] .app-header,
+html[data-ui-theme="gameboy"] .bottom-nav,
+html[data-ui-theme="gameboy"] .mini-player {
+  background: #cbc7b7;
+  color: var(--text);
+  border-color: #8d897c;
+}
+
+html[data-ui-theme="gameboy"] .screen {
+  background: #d6d2c2;
+}
+
+html[data-ui-theme="gameboy"] .mode-segment,
+html[data-ui-theme="gameboy"] .library-segment,
+html[data-ui-theme="gameboy"] .add-segment,
+html[data-ui-theme="gameboy"] .search-type-segment {
+  border: 2px solid #858174;
+  border-radius: 4px;
+  background: #bbb7a8;
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.25),
+    inset -2px -2px 0 rgba(69, 67, 61, 0.16);
+}
+
+html[data-ui-theme="gameboy"] .mode-segment-btn,
+html[data-ui-theme="gameboy"] .library-segment-btn,
+html[data-ui-theme="gameboy"] .add-segment-btn,
+html[data-ui-theme="gameboy"] .search-type-btn {
+  border-radius: 2px;
+  color: #40434d;
+  font-weight: 700;
+}
+
+html[data-ui-theme="gameboy"] .mode-segment-indicator,
+html[data-ui-theme="gameboy"] .library-segment-btn.active,
+html[data-ui-theme="gameboy"] .add-segment-btn.active,
+html[data-ui-theme="gameboy"] .search-type-btn.active {
+  background: #ebe7d7;
+  color: #171923;
+  box-shadow: inset -2px -2px 0 rgba(81, 78, 69, 0.14);
+}
+
+html[data-ui-theme="gameboy"] .mode-segment-btn.active {
+  color: #171923;
+}
+
+html[data-ui-theme="gameboy"] #screen-home {
+  padding-top: 10px;
+}
+
+html[data-ui-theme="gameboy"] #screen-home .mode-segment {
+  width: min(360px, calc(100% - 24px));
+  margin: 0 auto 12px;
+}
+
+html[data-ui-theme="gameboy"] .player-device {
+  position: relative;
+  display: block;
+  width: min(382px, calc(100% - 20px));
+  margin: 0 auto 14px;
+  padding: 22px 20px 28px;
+  border: 3px solid #8a877b;
+  border-radius: 14px 14px 36px 14px;
+  background: #cfccbd;
+  box-shadow:
+    inset 4px 4px 0 rgba(255, 255, 255, 0.3),
+    inset -5px -6px 0 rgba(73, 71, 64, 0.16),
+    0 14px 28px rgba(48, 48, 45, 0.2);
+}
+
+html[data-ui-theme="gameboy"] .player-device::after {
+  content: "";
+  position: absolute;
+  right: 24px;
+  bottom: 20px;
+  width: 92px;
+  height: 54px;
+  background: repeating-linear-gradient(
+    72deg,
+    transparent 0 10px,
+    #7b786f 10px 14px,
+    transparent 14px 20px
+  );
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+html[data-ui-theme="gameboy"] .player-screen {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(78px, 31%) minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 196px;
+  margin: 0 0 52px;
+  padding: 18px;
+  border: 13px solid #53525e;
+  border-radius: 8px 8px 24px 8px;
+  background:
+    repeating-linear-gradient(0deg, rgba(43, 59, 20, 0.12) 0 1px, transparent 1px 4px),
+    #8d9b4c;
+  color: #17210e;
+  box-shadow:
+    inset 0 0 0 2px #24291c,
+    0 0 0 2px #3b3a44;
+  overflow: visible;
+}
+
+html[data-ui-theme="gameboy"] .player-screen::before {
+  content: "DOT MATRIX  |  STEREO";
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  top: -33px;
+  height: 12px;
+  color: #bcb6bf;
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 12px;
+  text-align: center;
+  border-top: 2px solid #2b2469;
+  pointer-events: none;
+}
+
+html[data-ui-theme="gameboy"] .player-screen::after {
+  content: "GAME BOY";
+  position: absolute;
+  left: -4px;
+  bottom: -40px;
+  color: #202f78;
+  font-family: Arial, sans-serif;
+  font-size: 17px;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+}
+
+html[data-ui-theme="gameboy"] .player-screen .home-panels {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+html[data-ui-theme="gameboy"] .player-screen .player-display-info {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+html[data-ui-theme="gameboy"] .home-music.is-active,
+html[data-ui-theme="gameboy"] .home-video.is-active {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+html[data-ui-theme="gameboy"] .album-art {
+  width: min(92px, 100%);
+  max-width: 92px;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+  filter: contrast(1.12) saturate(0.78);
+}
+
+html[data-ui-theme="gameboy"] .track-title {
+  display: -webkit-box;
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  color: #17210e;
+  font-size: 13px;
+  line-height: 1.2;
+  text-align: left;
+  text-overflow: clip;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+html[data-ui-theme="gameboy"] .track-artist {
+  display: -webkit-box;
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  color: #31401d;
+  font-size: 10px;
+  line-height: 1.25;
+  text-align: left;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+html[data-ui-theme="gameboy"] .progress-row {
+  width: 100%;
+  flex-shrink: 0;
+  gap: 5px;
+  margin: 0;
+  color: #253318;
+  font-size: 9px;
+}
+
+html[data-ui-theme="gameboy"] .progress-bar-hit {
+  min-height: 18px;
+  padding: 7px 0;
+}
+
+html[data-ui-theme="gameboy"] .progress-bar {
+  height: 6px;
+  border: 1px solid #2c391d;
+  border-radius: 0;
+  background: #6e7e39;
+}
+
+html[data-ui-theme="gameboy"] .progress-bar span#musicFill {
+  border-radius: 0;
+  background: #17210e;
+}
+
+html[data-ui-theme="gameboy"] #screen-home:has(.home-video.is-active) .player-screen {
+  display: block;
+  min-height: 204px;
+  padding: 8px;
+}
+
+html[data-ui-theme="gameboy"] #screen-home:has(.home-video.is-active) .player-screen .home-panels {
+  width: 100%;
+  height: 100%;
+  min-height: 160px;
+}
+
+html[data-ui-theme="gameboy"] #screen-home:has(.home-video.is-active) .player-screen .player-display-info {
+  display: none;
+}
+
+html[data-ui-theme="gameboy"] #screen-home:has(.home-video.is-active) .home-video.is-active,
+html[data-ui-theme="gameboy"] #screen-home:has(.home-video.is-active) .video-stage {
+  width: 100%;
+  height: 100%;
+  min-height: 160px;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* fix121: widen only the video LCD so YouTube keeps its settings control visible */
+html[data-ui-theme="gameboy"] #screen-home:has(.home-video.is-active) .player-device {
+  width: calc(100% - 4px);
+  max-width: 382px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+html[data-ui-theme="gameboy"] #screen-home:has(.home-video.is-active) .player-screen {
+  padding-left: 0;
+  padding-right: 0;
+  border-left-width: 3px;
+  border-right-width: 3px;
+}
+
+html[data-ui-theme="gameboy"] .player-device .player-chrome {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+html[data-ui-theme="gameboy"] .controls-row {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 174px;
+  margin: 0;
+}
+
+html[data-ui-theme="gameboy"] .controls-row::before,
+html[data-ui-theme="gameboy"] .controls-row::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 36px;
+  background: #171820;
+  box-shadow:
+    inset 3px 3px 0 rgba(255, 255, 255, 0.08),
+    inset -3px -3px 0 rgba(0, 0, 0, 0.38),
+    0 3px 0 #08090c;
+}
+
+html[data-ui-theme="gameboy"] .controls-row::before {
+  width: 86px;
+  height: 30px;
+}
+
+html[data-ui-theme="gameboy"] .controls-row::after {
+  left: 46px;
+  top: 8px;
+  width: 30px;
+  height: 86px;
+}
+
+html[data-ui-theme="gameboy"] .ctrl-btn {
+  position: absolute;
+  z-index: 2;
+  border-radius: 0;
+  background: transparent;
+  color: #161820;
+  box-shadow: none;
+}
+
+html[data-ui-theme="gameboy"] .ctrl-btn .icon {
+  width: 21px;
+  height: 21px;
+}
+
+html[data-ui-theme="gameboy"] #btnPrev,
+html[data-ui-theme="gameboy"] #btnNext {
+  top: 29px;
+  width: 36px;
+  height: 44px;
+  color: #d4d4d0;
+}
+
+html[data-ui-theme="gameboy"] #btnPrev {
+  left: 14px;
+}
+
+html[data-ui-theme="gameboy"] #btnNext {
+  left: 75px;
+}
+
+html[data-ui-theme="gameboy"] .ctrl-play {
+  right: 18px;
+  top: 12px;
+  width: 60px;
+  height: 60px;
+  border: 3px solid #65113e;
+  border-radius: 50%;
+  background: #a81761;
+  color: #fff0f8;
+  box-shadow:
+    inset 3px 3px 0 rgba(255, 255, 255, 0.2),
+    inset -4px -4px 0 rgba(47, 5, 27, 0.32),
+    0 4px 0 #62123b;
+}
+
+html[data-ui-theme="gameboy"] .ctrl-play::after {
+  content: "A";
+  position: absolute;
+  right: -14px;
+  bottom: -12px;
+  color: #202f78;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+html[data-ui-theme="gameboy"] #btnShuffle,
+html[data-ui-theme="gameboy"] #btnRepeat {
+  top: 112px;
+  width: 52px;
+  height: 18px;
+  border: 2px solid #77746a;
+  border-radius: 999px;
+  background: #a4a198;
+  color: #202f78;
+  transform: rotate(-18deg);
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.34),
+    inset -2px -2px 0 rgba(54, 52, 47, 0.22),
+    0 3px 0 #77746a;
+}
+
+html[data-ui-theme="gameboy"] #btnShuffle {
+  left: calc(50% - 62px);
+}
+
+html[data-ui-theme="gameboy"] #btnRepeat {
+  left: calc(50% + 6px);
+}
+
+html[data-ui-theme="gameboy"] #btnShuffle .icon,
+html[data-ui-theme="gameboy"] #btnRepeat .icon {
+  display: none;
+}
+
+html[data-ui-theme="gameboy"] #btnShuffle::after,
+html[data-ui-theme="gameboy"] #btnRepeat::after {
+  position: absolute;
+  left: 50%;
+  top: 22px;
+  color: #202f78;
+  font-size: 10px;
+  font-weight: 700;
+  transform: translateX(-50%);
+}
+
+html[data-ui-theme="gameboy"] #btnShuffle::after {
+  content: "SELECT";
+}
+
+html[data-ui-theme="gameboy"] #btnRepeat::after {
+  content: "START";
+}
+
+html[data-ui-theme="gameboy"] .ctrl-btn:active {
+  transform: translateY(2px);
+}
+
+html[data-ui-theme="gameboy"] #btnShuffle:active,
+html[data-ui-theme="gameboy"] #btnRepeat:active {
+  transform: rotate(-18deg) translateY(2px);
+}
+
+html[data-ui-theme="gameboy"] .home-queue {
+  width: min(382px, calc(100% - 20px));
+  margin: 12px auto 0;
+  border-top: 2px solid #9b978a;
+}
+
+html[data-ui-theme="gameboy"] .home-queue-preview-item {
+  border-color: #aaa697;
+}
+
+html[data-ui-theme="gameboy"] .home-queue-thumb,
+html[data-ui-theme="gameboy"] .home-queue-preview-thumb,
+html[data-ui-theme="gameboy"] .track-thumb,
+html[data-ui-theme="gameboy"] .mini-art,
+html[data-ui-theme="gameboy"] .search-thumb {
+  border-radius: 0;
+}
+
+html[data-ui-theme="gameboy"] #screen-settings .settings-card {
+  margin: 0;
+  padding: 18px 2px;
+  border: 0;
+  border-bottom: 2px solid #aaa697;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-ui-theme="gameboy"] .playlist-card,
+html[data-ui-theme="gameboy"] .url-target-card,
+html[data-ui-theme="gameboy"] .url-card,
+html[data-ui-theme="gameboy"] .search-result,
+html[data-ui-theme="gameboy"] .gate-card,
+html[data-ui-theme="gameboy"] .withdraw-card,
+html[data-ui-theme="gameboy"] .admin-code-card,
+html[data-ui-theme="gameboy"] .admin-feedback-card {
+  border: 2px solid #8b877a;
+  border-radius: 3px;
+  background: #cfcbba;
+  color: #171923;
+  box-shadow: inset -3px -3px 0 rgba(80, 77, 68, 0.12);
+}
+
+html[data-ui-theme="gameboy"] .field-input,
+html[data-ui-theme="gameboy"] .field-select,
+html[data-ui-theme="gameboy"] .field-textarea,
+html[data-ui-theme="gameboy"] .search-input {
+  border: 2px solid #858174;
+  border-radius: 3px;
+  background: #ebe6d3;
+  color: #171923;
+}
+
+html[data-ui-theme="gameboy"] .btn-primary,
+html[data-ui-theme="gameboy"] .btn-secondary,
+html[data-ui-theme="gameboy"] .search-action-btn {
+  border: 2px solid #858174;
+  border-radius: 3px;
+  background: #bbb7a8;
+  color: #171923;
+  box-shadow: inset -2px -2px 0 rgba(72, 69, 61, 0.16);
+}
+
+html[data-ui-theme="gameboy"] .btn-primary,
+html[data-ui-theme="gameboy"] .search-action-btn-accent {
+  border-color: #68143f;
+  background: #a81761;
+  color: #fff1f8;
+}
+
+html[data-ui-theme="gameboy"] .quality-segment-btn {
+  border: 2px solid #858174;
+  border-radius: 3px;
+  background: #bbb7a8;
+  color: #353842;
+}
+
+html[data-ui-theme="gameboy"] .quality-segment-btn.active {
+  border-color: #28341c;
+  background: #8d9b4c;
+  color: #17210e;
+}
+
+@media (max-width: 380px) {
+  html[data-ui-theme="gameboy"] .player-device {
+    width: calc(100% - 14px);
+    padding: 18px 14px 24px;
+  }
+
+  html[data-ui-theme="gameboy"] .player-screen {
+    grid-template-columns: minmax(68px, 30%) minmax(0, 1fr);
+    gap: 9px;
+    min-height: 184px;
+    padding: 14px;
+    border-width: 11px;
+  }
+
+  html[data-ui-theme="gameboy"] .album-art {
+    width: min(78px, 100%);
+  }
+
+  html[data-ui-theme="gameboy"] .track-title {
+    font-size: 12px;
+  }
+
+  html[data-ui-theme="gameboy"] .player-device::after {
+    right: 16px;
+    width: 76px;
+  }
+
+  html[data-ui-theme="gameboy"] .home-queue {
+    width: calc(100% - 14px);
+  }
+}
